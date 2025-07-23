@@ -32,8 +32,8 @@
   // Use 'postCreateCommand' to run commands after the container is created
   "postCreateCommand": "npm install",
 
-  // Start the dev server automatically
-  "postStartCommand": "npm run dev",
+  // Don't auto-start the dev server
+  // "postStartCommand": "npm run dev",
 
   // Environment variables
   "remoteEnv": {
