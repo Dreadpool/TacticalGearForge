@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@300;400;500;600;700&family=Share+Tech+Mono&family=Rajdhani:wght@300;400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -24,13 +26,17 @@
   --ring: hsl(20, 14.3%, 4.1%);
   --radius: 0.5rem;
 
-  /* Military Color System */
+  /* Authentic Military Color System */
   --color-ops-black: hsl(0, 0%, 4%);
+  --color-olive-drab: hsl(60, 27%, 18%);     /* #3C341F */
+  --color-ranger-green: hsl(100, 20%, 28%);  /* #425439 */
+  --color-coyote-brown: hsl(30, 37%, 37%);   /* #81613C */
+  --color-fde: hsl(30, 41%, 65%);            /* #C8A882 */
+  --color-wolf-gray: hsl(214, 6%, 31%);      /* #4A4E54 */
   --color-night-vision: hsl(123, 100%, 50%);
   --color-tactical-tan: hsl(38, 23%, 44%);
   --color-danger-red: hsl(0, 74%, 49%);
   --color-steel-gray: hsl(214, 13%, 33%);
-  --color-camo-green: hsl(82, 56%, 15%);
 }
 
 .dark {

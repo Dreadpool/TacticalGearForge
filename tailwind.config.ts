@@ -61,6 +61,17 @@ export default {
           border: "var(--sidebar-border)",
           ring: "var(--sidebar-ring)",
         },
+        // Authentic Military Color System
+        'ops-black': 'var(--color-ops-black)',
+        'olive-drab': 'var(--color-olive-drab)',
+        'ranger-green': 'var(--color-ranger-green)',
+        'coyote-brown': 'var(--color-coyote-brown)',
+        'fde': 'var(--color-fde)',
+        'wolf-gray': 'var(--color-wolf-gray)',
+        'night-vision': 'var(--color-night-vision)',
+        'tactical-tan': 'var(--color-tactical-tan)',
+        'danger-red': 'var(--color-danger-red)',
+        'steel-gray': 'var(--color-steel-gray)',
       },
       keyframes: {
         "accordion-down": {
@@ -79,6 +90,12 @@ export default {
             height: "0",
           },
         },
+      },
+      fontFamily: {
+        'military-header': ['Bebas Neue', 'sans-serif'],
+        'tactical': ['Oswald', 'sans-serif'],
+        'mono-terminal': ['Share Tech Mono', 'monospace'],
+        'hud': ['Rajdhani', 'sans-serif'],
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
