@@ -19,17 +19,8 @@ export default function Navigation() {
               </div>
             </Link>
             <div className="hidden md:flex space-x-6 font-mono text-sm">
-              <Link href="/products?category=PROTECTION" className="text-steel-gray hover:text-night-vision transition-colors">
-                PROTECTION
-              </Link>
-              <Link href="/products?category=LOAD%20BEARING" className="text-steel-gray hover:text-night-vision transition-colors">
+              <Link href="/products" className="text-steel-gray hover:text-night-vision transition-colors">
                 GEAR
-              </Link>
-              <Link href="/products?category=OPTICS" className="text-steel-gray hover:text-night-vision transition-colors">
-                OPTICS
-              </Link>
-              <Link href="/products?category=TOOLS" className="text-steel-gray hover:text-night-vision transition-colors">
-                TOOLS
               </Link>
             </div>
           </div>
