@@ -1,9 +1,13 @@
 import type { Express } from "express";
 import express from "express";
 import path from "path";
+import { fileURLToPath } from "url";
 import { storage } from "./storage";
 import { insertProductSchema, insertCartItemSchema } from "@shared/schema";
 import { z } from "zod";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 export async function registerRoutes(app: Express): Promise<Express> {
   // Assets endpoint for serving product images
