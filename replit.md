@@ -115,7 +115,8 @@ The application is designed to be easily deployable on Replit with in-memory sto
 ✓ Integrated authentic military color palette (Olive Drab #3C341F, Ranger Green #425439, Coyote Brown #81613C, FDE #C8A882, Wolf Gray #4A4E54)
 ✓ Added professional military typography fonts (Bebas Neue, Oswald, Share Tech Mono, Rajdhani)
 ✓ Implemented SWAT training video background for realistic military environment
-✓ Integrated professional Holosun HS510C red dot sight model with distinctive solar panel and circle dot reticle
+✓ Created separate loading screen with embedded Sketchfab Holosun HS510C model (no rotation animation on iframe)
+✓ Moved SWAT training video to hero section with professional styling and overlays
 ✓ Enhanced lighting system with multiple professional light sources for equipment visibility
 ✓ Updated military HUD interface for tactical optic status display
 ✓ Added professional picatinny rail mounting system with authentic details

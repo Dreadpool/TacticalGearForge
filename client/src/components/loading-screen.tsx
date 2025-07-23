@@ -1,85 +1,182 @@
-import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 
 interface LoadingScreenProps {
-  onComplete: () => void;
+  onLoadingComplete: () => void;
 }
 
-export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
-  const [progress, setProgress] = useState(0);
-  const [isVisible, setIsVisible] = useState(true);
+// Typewriter Text Component
+interface TypewriterTextProps {
+  text: string;
+  speed?: number;
+}
+
+const TypewriterText = ({ text, speed = 50 }: TypewriterTextProps) => {
+  const [displayText, setDisplayText] = useState('');
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
-    const updateProgress = () => {
+    if (currentIndex < text.length) {
+      const timeout = setTimeout(() => {
+        setDisplayText(prev => prev + text[currentIndex]);
+        setCurrentIndex(prev => prev + 1);
+      }, speed);
+      return () => clearTimeout(timeout);
+    }
+  }, [currentIndex, text, speed]);
+
+  return <span>{displayText}</span>;
+};
+
+export default function LoadingScreen({ onLoadingComplete }: LoadingScreenProps) {
+  const [progress, setProgress] = useState(0);
+  const [currentStep, setCurrentStep] = useState(0);
+
+  const loadingSteps = [
+    "INITIALIZING TACTICAL SYSTEMS...",
+    "LOADING ARMORY DATABASE...",
+    "AUTHENTICATING CLEARANCE...",
+    "PREPARING EQUIPMENT CATALOG...",
+    "SYSTEM READY"
+  ];
+
+  useEffect(() => {
+    const timer = setInterval(() => {
       setProgress(prev => {
-        const newProgress = prev + Math.random() * 15;
+        const newProgress = prev + 2;
+        
+        // Update step based on progress
+        const stepIndex = Math.floor((newProgress / 100) * loadingSteps.length);
+        setCurrentStep(Math.min(stepIndex, loadingSteps.length - 1));
+        
         if (newProgress >= 100) {
-          setTimeout(() => {
-            setIsVisible(false);
-            setTimeout(onComplete, 1000);
-          }, 500);
+          clearInterval(timer);
+          setTimeout(() => onLoadingComplete(), 1000);
           return 100;
         }
         return newProgress;
       });
-    };
+    }, 100);
 
-    const interval = setInterval(updateProgress, 100 + Math.random() * 200);
-    
-    return () => clearInterval(interval);
-  }, [onComplete]);
-
-  const progressBlocks = Math.floor((progress / 100) * 40);
-  const emptyBlocks = 40 - progressBlocks;
-  const progressBar = '█'.repeat(progressBlocks) + '░'.repeat(emptyBlocks);
+    return () => clearInterval(timer);
+  }, [onLoadingComplete, loadingSteps.length]);
 
   return (
-    <motion.div
-      className={`loading-screen flex items-center justify-center ${!isVisible ? 'fade-out' : ''}`}
-      initial={{ opacity: 1 }}
+    <motion.div 
+      className="fixed inset-0 z-50 bg-ops-black flex items-center justify-center"
       exit={{ opacity: 0 }}
-      transition={{ duration: 1 }}
+      transition={{ duration: 0.8 }}
     >
-      <div className="text-center">
-        <div className="mb-8">
-          <div className="text-night-vision font-mono text-sm mb-4">
-            <span className="terminal-cursor">INITIALIZING TACTICAL SYSTEMS</span>
+      {/* Scan lines background */}
+      <div 
+        className="absolute inset-0 pointer-events-none opacity-20"
+        style={{
+          background: 'repeating-linear-gradient(0deg, transparent 0px, transparent 2px, rgba(0, 255, 65, 0.1) 2px, rgba(0, 255, 65, 0.1) 4px)',
+          animation: 'scanlines 2s linear infinite'
+        }}
+      />
+
+      {/* Corner brackets */}
+      <div className="fixed inset-0 pointer-events-none">
+        <div className="absolute top-8 left-8 w-16 h-16 border-l-4 border-t-4 border-night-vision opacity-70 animate-pulse" />
+        <div className="absolute top-8 right-8 w-16 h-16 border-r-4 border-t-4 border-night-vision opacity-70 animate-pulse" />
+        <div className="absolute bottom-8 left-8 w-16 h-16 border-l-4 border-b-4 border-night-vision opacity-70 animate-pulse" />
+        <div className="absolute bottom-8 right-8 w-16 h-16 border-r-4 border-b-4 border-night-vision opacity-70 animate-pulse" />
+      </div>
+
+      <div className="text-center z-10">
+        {/* Title */}
+        <motion.h1 
+          className="text-4xl md:text-6xl font-military-header mb-8 tracking-widest"
+          style={{ 
+            textShadow: '0 0 30px rgba(0, 255, 65, 0.6)',
+            color: '#00FF41',
+            filter: 'drop-shadow(0 0 10px #00FF41)'
+          }}
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+        >
+          TACTICAL OPERATIONS
+        </motion.h1>
+
+        {/* Sketchfab Holosun Embed */}
+        <motion.div 
+          className="mb-8"
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1, delay: 0.3 }}
+        >
+          <div className="sketchfab-embed-wrapper" style={{ width: '400px', height: '300px', margin: '0 auto' }}>
+            <iframe 
+              title="Holosun HS510C Red Dot Sight | Game-Ready (PBR)" 
+              frameBorder="0" 
+              allowFullScreen
+              style={{
+                width: '100%',
+                height: '100%',
+                borderRadius: '8px',
+                border: '2px solid #00FF41',
+                boxShadow: '0 0 20px rgba(0, 255, 65, 0.3)'
+              }}
+              src="https://sketchfab.com/models/2499516c0afd4698b72e4e9f8ab0e140/embed?autostart=1&ui_controls=0&ui_infos=0&ui_stop=0&ui_watermark=0&ui_help=0&ui_settings=0&ui_vr=0&ui_fullscreen=0&ui_annotations=0"
+            />
           </div>
-          
-          <div className="font-mono text-xs text-night-vision mb-4">
-            <div className="w-80">
-              [{progressBar}] {Math.floor(progress)}%
-            </div>
+        </motion.div>
+
+        {/* Loading text */}
+        <motion.div 
+          className="text-xl md:text-2xl mb-8 font-mono-terminal tracking-wide"
+          style={{ color: '#00FF41' }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.5 }}
+        >
+          <TypewriterText text={loadingSteps[currentStep]} speed={30} />
+        </motion.div>
+
+        {/* Progress bar */}
+        <motion.div 
+          className="w-80 h-2 bg-ops-black border border-night-vision mx-auto mb-4"
+          initial={{ opacity: 0, width: 0 }}
+          animate={{ opacity: 1, width: 320 }}
+          transition={{ duration: 0.8, delay: 0.7 }}
+        >
+          <motion.div 
+            className="h-full bg-night-vision"
+            style={{
+              width: `${progress}%`,
+              boxShadow: '0 0 10px #00FF41'
+            }}
+            transition={{ duration: 0.1 }}
+          />
+        </motion.div>
+
+        {/* Progress percentage */}
+        <motion.div 
+          className="text-night-vision font-mono-terminal text-lg"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.9 }}
+        >
+          {progress.toFixed(0)}% COMPLETE
+        </motion.div>
+
+        {/* Status readout */}
+        <motion.div 
+          className="fixed top-6 left-6 text-night-vision font-mono-terminal text-xs"
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, delay: 1.1 }}
+        >
+          <div className="bg-ops-black bg-opacity-80 p-4 border border-night-vision border-opacity-40">
+            <div className="text-night-vision mb-2 font-hud font-semibold">SYSTEM STATUS</div>
+            <div className="text-night-vision">SECURITY: CLASSIFIED</div>
+            <div className="text-night-vision">ACCESS: AUTHORIZED</div>
+            <div className="text-night-vision">MODE: LOADING</div>
+            <div className="text-night-vision">READY: {progress >= 100 ? 'TRUE' : 'FALSE'}</div>
           </div>
-          
-          <div className="text-xs text-steel-gray font-mono space-y-1">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.5 }}
-            >
-              LOADING SECURE PROTOCOLS...
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1.5 }}
-            >
-              ESTABLISHING ENCRYPTED CONNECTION...
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 2.5 }}
-            >
-              AUTHENTICATION VERIFIED
-            </motion.div>
-          </div>
-        </div>
-        
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="scanline-overlay animate-scanline"></div>
-        </div>
+        </motion.div>
       </div>
     </motion.div>
   );

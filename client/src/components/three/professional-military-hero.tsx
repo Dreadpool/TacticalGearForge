@@ -262,8 +262,9 @@ export default function ProfessionalMilitaryHero({ className = '' }: Professiona
         if (index > 0) { // Skip the ring
           const dotTime = time + (index * 0.2);
           child.scale.setScalar(1 + Math.sin(dotTime * 2) * 0.3);
-          (child.material as THREE.MeshStandardMaterial).emissiveIntensity = 
-            0.3 + Math.sin(dotTime * 3) * 0.2;
+          if (child instanceof THREE.Mesh && child.material instanceof THREE.MeshStandardMaterial) {
+            child.material.emissiveIntensity = 0.3 + Math.sin(dotTime * 3) * 0.2;
+          }
         }
       });
 
@@ -407,31 +408,7 @@ export default function ProfessionalMilitaryHero({ className = '' }: Professiona
             <TypewriterText text="LOADING ARMORY SYSTEMS..." />
           </motion.div>
           
-          {/* Sketchfab Holosun Embed */}
-          <motion.div 
-            className="mb-8"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1, delay: 0.5 }}
-          >
-            <div className="sketchfab-embed-wrapper" style={{ width: '400px', height: '300px', margin: '0 auto' }}>
-              <iframe 
-                title="Holosun HS510C Red Dot Sight | Game-Ready (PBR)" 
-                frameBorder="0" 
-                allowFullScreen
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  borderRadius: '8px',
-                  border: '2px solid #00FF41',
-                  boxShadow: '0 0 20px rgba(0, 255, 65, 0.3)',
-                  transform: 'rotate(0deg)',
-                  animation: 'rotateLoad 4s ease-in-out infinite'
-                }}
-                src="https://sketchfab.com/models/2499516c0afd4698b72e4e9f8ab0e140/embed?autostart=1&ui_controls=0&ui_infos=0&ui_stop=0&ui_watermark=0&ui_help=0&ui_settings=0&ui_vr=0&ui_fullscreen=0&ui_annotations=0"
-              />
-            </div>
-          </motion.div>
+
 
           <motion.button
             className="bg-ops-black hover:bg-night-vision text-night-vision hover:text-ops-black font-tactical font-bold py-4 px-8 text-lg tracking-wider border-2 border-night-vision transition-all duration-300"

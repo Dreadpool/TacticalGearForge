@@ -1,8 +1,10 @@
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 import Navigation from "@/components/navigation";
 import HeroSection from "@/components/hero-section";
 import ProfessionalMilitaryHero from "@/components/three/professional-military-hero";
+import LoadingScreen from "@/components/loading-screen";
 import ProductShowcase3D from "@/components/product-showcase-3d";
 import ProductCard from "@/components/product-card";
 import Footer from "@/components/footer";
@@ -11,6 +13,7 @@ import { Shield, Backpack, Eye, Gavel } from "lucide-react";
 import type { Product } from "@shared/schema";
 
 export default function Home() {
+  const [showLoading, setShowLoading] = useState(true);
   const { data: products, isLoading } = useQuery<Product[]>({
     queryKey: ['/api/products'],
   });
@@ -33,9 +36,16 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-ops-black text-white">
-      <Navigation />
+      <AnimatePresence>
+        {showLoading && (
+          <LoadingScreen onLoadingComplete={() => setShowLoading(false)} />
+        )}
+      </AnimatePresence>
       
-      <ProfessionalMilitaryHero />
+      {!showLoading && (
+        <>
+          <Navigation />
+          <ProfessionalMilitaryHero />
 
       {/* Featured Products */}
       <section className="py-20 relative">
@@ -150,7 +160,9 @@ export default function Home() {
         <div className="absolute inset-0 tactical-grid opacity-5 pointer-events-none"></div>
       </section>
 
-      <Footer />
+          <Footer />
+        </>
+      )}
     </div>
   );
 }
