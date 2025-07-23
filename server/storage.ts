@@ -60,6 +60,12 @@ export class MemStorage implements IStorage {
         price: "84.99",
         category: "PROTECTION",
         imageUrl: "/api/assets/MC-2048x2048.jpg",
+        additionalImages: JSON.stringify([
+          "/api/assets/MC-2048x2048.jpg",
+          "/api/assets/MHA-Mounted-300x300.webp",
+          "/api/assets/MHA-Mounted-2-300x300.webp",
+          "/api/assets/MHA-Mounted-3-300x300.webp"
+        ]),
         inStock: true,
         specifications: JSON.stringify({
           material: "DFARS grade 6061-T6 aluminum",

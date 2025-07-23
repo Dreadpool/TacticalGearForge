@@ -269,20 +269,23 @@ export default function ProductDetailModern() {
 
               {/* Thumbnail Grid */}
               <div className="grid grid-cols-4 gap-3">
-                {[...Array(4)].map((_, i) => (
-                  <motion.div
-                    key={i}
-                    className="relative aspect-square cursor-pointer group"
-                    whileHover={{ scale: 1.05 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <img
-                      src={product.imageUrl}
-                      alt={`${product.name} view ${i + 1}`}
-                      className="w-full h-full object-cover rounded border border-ranger-green/30 group-hover:border-night-vision transition-colors"
-                    />
-                  </motion.div>
-                ))}
+                {(() => {
+                  const additionalImages = product.additionalImages ? JSON.parse(product.additionalImages) : [product.imageUrl];
+                  return additionalImages.map((imageUrl: string, i: number) => (
+                    <motion.div
+                      key={i}
+                      className="relative aspect-square cursor-pointer group"
+                      whileHover={{ scale: 1.05 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <img
+                        src={imageUrl}
+                        alt={`${product.name} view ${i + 1}`}
+                        className="w-full h-full object-cover rounded border border-ranger-green/30 group-hover:border-night-vision transition-colors"
+                      />
+                    </motion.div>
+                  ));
+                })()}
               </div>
             </motion.div>
 
