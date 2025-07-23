@@ -19,14 +19,14 @@ export default function Products() {
   const categoryFilter = urlParams.get('category') || '';
   
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState(categoryFilter);
+  const [selectedCategory, setSelectedCategory] = useState(categoryFilter || 'ALL');
   const [sortBy, setSortBy] = useState("name");
   
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
   const { data: products, isLoading } = useQuery<Product[]>({
-    queryKey: ['/api/products', selectedCategory ? `?category=${selectedCategory}` : ''],
+    queryKey: ['/api/products', (selectedCategory && selectedCategory !== 'ALL') ? `?category=${selectedCategory}` : ''],
   });
 
   const filteredProducts = products?.filter(product => {
@@ -140,7 +140,7 @@ export default function Products() {
                 <SelectValue placeholder="CATEGORY" />
               </SelectTrigger>
               <SelectContent className="bg-ops-black border-night-vision">
-                <SelectItem value="">ALL CATEGORIES</SelectItem>
+                <SelectItem value="ALL">ALL CATEGORIES</SelectItem>
                 {categories.map(category => (
                   <SelectItem key={category} value={category}>{category}</SelectItem>
                 ))}
