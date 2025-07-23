@@ -117,6 +117,9 @@ The application is designed to be easily deployable on Replit with in-memory sto
 ✓ Implemented SWAT training video background for realistic military environment
 ✓ Created separate loading screen with embedded Sketchfab Holosun HS510C model (no rotation animation on iframe)
 ✓ Moved SWAT training video to hero section with professional styling and overlays
+✓ Added "ENTER ARMORY" button to loading screen - users must click to proceed to hero section
+✓ Fixed video display issues by adjusting z-index layers and removing blocking elements
+✓ Implemented proper user interaction flow: Loading → Enter Armory → Hero with SWAT video
 ✓ Enhanced lighting system with multiple professional light sources for equipment visibility
 ✓ Updated military HUD interface for tactical optic status display
 ✓ Added professional picatinny rail mounting system with authentic details

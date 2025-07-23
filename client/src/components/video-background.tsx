@@ -74,7 +74,7 @@ export default function VideoBackground({ className }: VideoBackgroundProps) {
         ref={videoRef}
         className={`fixed top-0 left-0 w-full h-screen object-cover ${className}`}
         style={{
-          filter: 'brightness(0.8) contrast(1.1)',
+          filter: 'brightness(0.4) contrast(1.2)',
           zIndex: 1
         }}
         autoPlay
@@ -82,7 +82,7 @@ export default function VideoBackground({ className }: VideoBackgroundProps) {
         loop
         playsInline
         preload="auto"
-        controls={true} // Temporarily add controls for debugging
+        controls={false}
       >
         <source src="/swat-training.mp4" type="video/mp4" />
         <source src="/attached_assets/090406552-swat-officers-prepare-training_1753253747041.mp4" type="video/mp4" />

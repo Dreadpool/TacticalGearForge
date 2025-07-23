@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 
 interface LoadingScreenProps {
-  onLoadingComplete: () => void;
+  onEnterArmory: () => void;
 }
 
 // Typewriter Text Component
@@ -28,9 +28,10 @@ const TypewriterText = ({ text, speed = 50 }: TypewriterTextProps) => {
   return <span>{displayText}</span>;
 };
 
-export default function LoadingScreen({ onLoadingComplete }: LoadingScreenProps) {
+export default function LoadingScreen({ onEnterArmory }: LoadingScreenProps) {
   const [progress, setProgress] = useState(0);
   const [currentStep, setCurrentStep] = useState(0);
+  const [loadingComplete, setLoadingComplete] = useState(false);
 
   const loadingSteps = [
     "INITIALIZING TACTICAL SYSTEMS...",
@@ -51,7 +52,7 @@ export default function LoadingScreen({ onLoadingComplete }: LoadingScreenProps)
         
         if (newProgress >= 100) {
           clearInterval(timer);
-          setTimeout(() => onLoadingComplete(), 1000);
+          setTimeout(() => setLoadingComplete(true), 1000);
           return 100;
         }
         return newProgress;
@@ -59,7 +60,7 @@ export default function LoadingScreen({ onLoadingComplete }: LoadingScreenProps)
     }, 100);
 
     return () => clearInterval(timer);
-  }, [onLoadingComplete, loadingSteps.length]);
+  }, [loadingSteps.length]);
 
   return (
     <motion.div 
@@ -154,13 +155,47 @@ export default function LoadingScreen({ onLoadingComplete }: LoadingScreenProps)
 
         {/* Progress percentage */}
         <motion.div 
-          className="text-night-vision font-mono-terminal text-lg"
+          className="text-night-vision font-mono-terminal text-lg mb-8"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.9 }}
         >
           {progress.toFixed(0)}% COMPLETE
         </motion.div>
+
+        {/* Enter Armory Button */}
+        {loadingComplete && (
+          <motion.button
+            className="relative bg-transparent border-2 border-night-vision text-night-vision px-8 py-4 font-military-header text-xl tracking-widest hover:bg-night-vision hover:text-ops-black transition-all duration-300 group"
+            style={{
+              textShadow: '0 0 10px rgba(0, 255, 65, 0.8)',
+              boxShadow: '0 0 20px rgba(0, 255, 65, 0.3)'
+            }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            onClick={onEnterArmory}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.textShadow = '0 0 15px rgba(10, 10, 10, 1)';
+              e.currentTarget.style.boxShadow = '0 0 30px rgba(0, 255, 65, 0.6)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.textShadow = '0 0 10px rgba(0, 255, 65, 0.8)';
+              e.currentTarget.style.boxShadow = '0 0 20px rgba(0, 255, 65, 0.3)';
+            }}
+          >
+            <span className="relative z-10">ENTER ARMORY</span>
+            
+            {/* Glitch effect overlay */}
+            <div className="absolute inset-0 bg-night-vision opacity-0 group-hover:opacity-10 transition-opacity duration-200" />
+            
+            {/* Corner brackets */}
+            <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-night-vision opacity-60" />
+            <div className="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-night-vision opacity-60" />
+            <div className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-night-vision opacity-60" />
+            <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-night-vision opacity-60" />
+          </motion.button>
+        )}
 
         {/* Status readout */}
         <motion.div 

@@ -38,7 +38,7 @@ export default function Home() {
     <div className="min-h-screen bg-ops-black text-white">
       <AnimatePresence>
         {showLoading && (
-          <LoadingScreen onLoadingComplete={() => setShowLoading(false)} />
+          <LoadingScreen onEnterArmory={() => setShowLoading(false)} />
         )}
       </AnimatePresence>
       
