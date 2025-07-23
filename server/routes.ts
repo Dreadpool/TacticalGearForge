@@ -7,7 +7,7 @@ import { z } from "zod";
 
 export async function registerRoutes(app: Express): Promise<Express> {
   // Assets endpoint for serving product images
-  app.use('/api/assets', express.static(path.resolve(process.cwd(), 'attached_assets')));
+  app.use('/api/assets', express.static(path.resolve(__dirname, '..', 'attached_assets')));
 
   // Products routes
   app.get("/api/products", async (req, res) => {
