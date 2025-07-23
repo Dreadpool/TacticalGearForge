@@ -315,15 +315,21 @@ export default function ProfessionalMilitaryHero({ className = '' }: Professiona
             PRECISION GEAR CO
           </motion.h1>
           
-          <motion.p 
-            className="text-xl md:text-2xl text-tactical-tan mb-6 font-hud tracking-wide leading-relaxed"
+          <motion.div 
+            className="text-2xl md:text-3xl text-white font-military-header font-bold mb-6 tracking-wide leading-relaxed"
+            style={{
+              textShadow: '0 0 20px rgba(255, 255, 255, 0.8), 0 0 40px rgba(0, 255, 65, 0.6)',
+              filter: 'drop-shadow(0 0 10px rgba(255, 255, 255, 0.5))'
+            }}
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 1.5 }}
           >
-            Only battle-tested gear from the world's best operators,<br />
-            because your family deserves it.
-          </motion.p>
+            <TypewriterText 
+              text="Only battle-tested gear from the world's best operators, because your family deserves it." 
+              speed={60}
+            />
+          </motion.div>
           
           <motion.p 
             className="text-2xl md:text-3xl text-night-vision mb-12 font-military-header tracking-wider"
