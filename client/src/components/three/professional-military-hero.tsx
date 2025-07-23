@@ -128,40 +128,22 @@ export default function ProfessionalMilitaryHero({ className = '' }: Professiona
     directionalLight.shadow.bias = -0.0005;
     scene.add(directionalLight);
 
-    // Strong ambient lighting for equipment visibility
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1.2); // Bright ambient
+    // Minimal ambient lighting (much dimmer)
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
     scene.add(ambientLight);
-
-    // Key fill light for optic details
-    const fillLight = new THREE.PointLight(0xffffff, 1.8, 20); // Bright fill
-    fillLight.position.set(-6, 8, 8);
-    scene.add(fillLight);
-
-    // Rim light for equipment definition
-    const rimLight = new THREE.PointLight(0xffffff, 1.5, 15); // Bright rim
-    rimLight.position.set(6, 6, -4);
-    scene.add(rimLight);
-
-    // Additional spot light for optic showcase
-    const spotLight = new THREE.SpotLight(0xffffff, 2.0, 25, Math.PI / 6, 0.25, 1);
-    spotLight.position.set(0, 8, 8);
-    spotLight.target.position.set(0, 1.5, 0);
-    spotLight.castShadow = true;
-    scene.add(spotLight);
-    scene.add(spotLight.target);
 
     // Simple ambient scene for hero background
     const heroGroup = new THREE.Group();
     scene.add(heroGroup);
 
-    // Professional military base ground
+    // Minimal ground for depth (very transparent)
     const groundGeometry = new THREE.PlaneGeometry(80, 80);
     const groundMaterial = new THREE.MeshStandardMaterial({
-      color: 0x4A4E54, // Wolf gray concrete
+      color: 0x4A4E54,
       roughness: 0.9,
       metalness: 0.1,
       transparent: true,
-      opacity: 0.7
+      opacity: 0.1 // Much more transparent
     });
     const ground = new THREE.Mesh(groundGeometry, groundMaterial);
     ground.rotation.x = -Math.PI / 2;
@@ -169,8 +151,8 @@ export default function ProfessionalMilitaryHero({ className = '' }: Professiona
     ground.receiveShadow = true;
     scene.add(ground);
 
-    // Authentic military dust particles
-    const particleCount = 2000;
+    // Minimal dust particles (much fewer and more transparent)
+    const particleCount = 200; // Reduced from 2000
     const dustGeometry = new THREE.BufferGeometry();
     const dustPositions = new Float32Array(particleCount * 3);
     const dustVelocities = new Float32Array(particleCount * 3);
@@ -189,11 +171,11 @@ export default function ProfessionalMilitaryHero({ className = '' }: Professiona
     dustGeometry.setAttribute('position', new THREE.BufferAttribute(dustPositions, 3));
 
     const dustMaterial = new THREE.PointsMaterial({
-      color: 0x81613C, // Coyote brown dust
-      size: 0.025,
+      color: 0x81613C,
+      size: 0.015, // Smaller particles
       sizeAttenuation: true,
       transparent: true,
-      opacity: 0.3,
+      opacity: 0.1, // Much more transparent
       blending: THREE.NormalBlending
     });
 
@@ -311,8 +293,8 @@ export default function ProfessionalMilitaryHero({ className = '' }: Professiona
         <div className="absolute bottom-8 right-8 w-16 h-16 border-r-4 border-b-4 border-night-vision opacity-70 animate-pulse" />
       </div>
 
-      {/* 3D Tactical Equipment Overlay */}
-      <div ref={mountRef} className="absolute inset-0 pointer-events-none" />
+      {/* 3D Tactical Equipment Overlay - moved to back */}
+      <div ref={mountRef} className="absolute inset-0 pointer-events-none" style={{ zIndex: -2 }} />
 
       {/* Professional Military HUD */}
       <MilitaryHUD mousePosition={mousePosition} />
