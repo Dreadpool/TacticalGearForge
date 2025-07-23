@@ -149,39 +149,9 @@ export default function ProfessionalMilitaryHero({ className = '' }: Professiona
     scene.add(spotLight);
     scene.add(spotLight.target);
 
-    // Create tactical loading spinner
-    const loadingGroup = new THREE.Group();
-    
-    // Tactical loading ring
-    const ringGeometry = new THREE.TorusGeometry(1.2, 0.08, 8, 32);
-    const ringMaterial = new THREE.MeshStandardMaterial({
-      color: 0x00FF41, // Phosphor green
-      emissive: 0x004400,
-      roughness: 0.3,
-      metalness: 0.7
-    });
-    const loadingRing = new THREE.Mesh(ringGeometry, ringMaterial);
-    loadingRing.position.set(0, 0, 0);
-    loadingGroup.add(loadingRing);
-
-    // Inner tactical elements
-    for (let i = 0; i < 8; i++) {
-      const dotGeometry = new THREE.SphereGeometry(0.06, 8, 8);
-      const dotMaterial = new THREE.MeshStandardMaterial({
-        color: 0x00FF41,
-        emissive: 0x002200,
-        roughness: 0.2,
-        metalness: 0.5
-      });
-      const dot = new THREE.Mesh(dotGeometry, dotMaterial);
-      const angle = (i / 8) * Math.PI * 2;
-      dot.position.set(Math.cos(angle) * 0.8, 0, Math.sin(angle) * 0.8);
-      loadingGroup.add(dot);
-    }
-
-    loadingGroup.position.set(0, 1.5, 0);
-    loadingGroup.scale.set(1.5, 1.5, 1.5);
-    scene.add(loadingGroup);
+    // Simple ambient scene for hero background
+    const heroGroup = new THREE.Group();
+    scene.add(heroGroup);
 
     // Professional military base ground
     const groundGeometry = new THREE.PlaneGeometry(80, 80);
@@ -252,26 +222,10 @@ export default function ProfessionalMilitaryHero({ className = '' }: Professiona
       }
       dustParticles.geometry.attributes.position.needsUpdate = true;
 
-      // Tactical loading animation
-      loadingRing.rotation.z = time * 0.8;
-      loadingGroup.rotation.y = time * 0.3;
-      loadingGroup.position.y = 1.5 + Math.sin(time * 0.5) * 0.1;
-
-      // Animate tactical dots
-      loadingGroup.children.forEach((child, index) => {
-        if (index > 0) { // Skip the ring
-          const dotTime = time + (index * 0.2);
-          child.scale.setScalar(1 + Math.sin(dotTime * 2) * 0.3);
-          if (child instanceof THREE.Mesh && child.material instanceof THREE.MeshStandardMaterial) {
-            child.material.emissiveIntensity = 0.3 + Math.sin(dotTime * 3) * 0.2;
-          }
-        }
-      });
-
-      // Camera positioning
-      camera.position.z = 8 - scrollProgress * 1;
-      camera.position.y = 2 + scrollProgress * 0.2;
-      camera.lookAt(loadingGroup.position);
+      // Simple camera animation
+      camera.position.z = 5;
+      camera.position.y = 0;
+      camera.lookAt(0, 0, 0);
 
       renderer.render(scene, camera);
       animationIdRef.current = requestAnimationFrame(animate);
@@ -340,7 +294,7 @@ export default function ProfessionalMilitaryHero({ className = '' }: Professiona
         loop
         playsInline
         preload="auto"
-        poster="/attached_assets/concrete-texture.jpg"
+        poster="/swat-training-poster.jpg"
       >
         <source src="/swat-training.mp4" type="video/mp4" />
         <source src="/attached_assets/090406552-swat-officers-prepare-training_1753253747041.mp4" type="video/mp4" />
