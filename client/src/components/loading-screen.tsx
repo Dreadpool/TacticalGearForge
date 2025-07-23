@@ -136,35 +136,38 @@ export default function LoadingScreen({ onEnterArmory }: LoadingScreenProps) {
           <TypewriterText text={loadingSteps[currentStep]} speed={30} />
         </motion.div>
 
-        {/* Progress bar */}
-        <motion.div 
-          className="w-80 h-2 bg-ops-black border border-night-vision mx-auto mb-4"
-          initial={{ opacity: 0, width: 0 }}
-          animate={{ opacity: 1, width: 320 }}
-          transition={{ duration: 0.8, delay: 0.7 }}
-        >
-          <motion.div 
-            className="h-full bg-night-vision"
-            style={{
-              width: `${progress}%`,
-              boxShadow: '0 0 10px #00FF41'
-            }}
-            transition={{ duration: 0.1 }}
-          />
-        </motion.div>
+        {/* Progress bar or Enter Armory Button */}
+        {!loadingComplete ? (
+          <>
+            {/* Progress bar */}
+            <motion.div 
+              className="w-80 h-2 bg-ops-black border border-night-vision mx-auto mb-4"
+              initial={{ opacity: 0, width: 0 }}
+              animate={{ opacity: 1, width: 320 }}
+              transition={{ duration: 0.8, delay: 0.7 }}
+            >
+              <motion.div 
+                className="h-full bg-night-vision"
+                style={{
+                  width: `${progress}%`,
+                  boxShadow: '0 0 10px #00FF41'
+                }}
+                transition={{ duration: 0.1 }}
+              />
+            </motion.div>
 
-        {/* Progress percentage */}
-        <motion.div 
-          className="text-night-vision font-mono-terminal text-lg mb-8"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.9 }}
-        >
-          {progress.toFixed(0)}% COMPLETE
-        </motion.div>
-
-        {/* Enter Armory Button */}
-        {loadingComplete && (
+            {/* Progress percentage */}
+            <motion.div 
+              className="text-night-vision font-mono-terminal text-lg"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.9 }}
+            >
+              {progress.toFixed(0)}% COMPLETE
+            </motion.div>
+          </>
+        ) : (
+          /* Enter Armory Button */
           <motion.button
             className="relative bg-transparent border-2 border-night-vision text-night-vision px-8 py-4 font-military-header text-xl tracking-widest hover:bg-night-vision hover:text-ops-black transition-all duration-300 group"
             style={{
