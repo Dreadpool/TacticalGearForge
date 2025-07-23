@@ -1,6 +1,7 @@
 import { useRef, useEffect, useState } from 'react';
 import * as THREE from 'three';
 import { motion } from 'framer-motion';
+import VideoBackground from '../video-background';
 
 // Typewriter Text Component
 interface TypewriterTextProps {
@@ -277,28 +278,7 @@ export default function ProfessionalMilitaryHero({ className = '' }: Professiona
   return (
     <div className={`relative w-full h-screen overflow-hidden bg-ops-black ${className}`}>
       {/* SWAT Training Video Background */}
-      <video
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100vh',
-          objectFit: 'cover',
-          filter: 'brightness(0.4) contrast(1.2)',
-          zIndex: -1,
-          willChange: 'transform'
-        }}
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="auto"
-        poster="/swat-training-poster.jpg"
-      >
-        <source src="/swat-training.mp4" type="video/mp4" />
-        <source src="/attached_assets/090406552-swat-officers-prepare-training_1753253747041.mp4" type="video/mp4" />
-      </video>
+      <VideoBackground />
 
       {/* Dark gradient overlay */}
       <div 
