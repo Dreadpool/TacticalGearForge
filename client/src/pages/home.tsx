@@ -53,7 +53,7 @@ export default function Home() {
           <ProfessionalMilitaryHero />
 
       {/* Featured Products */}
-      <section className="py-20 relative">
+      <section className="py-20 relative bg-ops-black" style={{ zIndex: 50 }}>
         <div className="container mx-auto px-6">
           <motion.div 
             className="text-center mb-16"
@@ -105,7 +105,7 @@ export default function Home() {
       <ProductShowcase3D />
 
       {/* Product Categories */}
-      <section className="py-20">
+      <section className="py-20 relative bg-ops-black" style={{ zIndex: 50 }}>
         <div className="container mx-auto px-6">
           <motion.div 
             className="text-center mb-16"
@@ -144,7 +144,7 @@ export default function Home() {
       </section>
 
       {/* Stats Section */}
-      <section className="py-20 bg-steel-gray bg-opacity-20 relative">
+      <section className="py-20 bg-steel-gray bg-opacity-20 relative" style={{ zIndex: 50 }}>
         <div className="container mx-auto px-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             {stats.map((stat, index) => (

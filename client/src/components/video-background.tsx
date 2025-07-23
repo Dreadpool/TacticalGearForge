@@ -63,7 +63,7 @@ export default function VideoBackground({ className }: VideoBackgroundProps) {
     <>
       {/* Fallback colored background for debugging */}
       <div 
-        className="fixed top-0 left-0 w-full h-screen"
+        className="absolute top-0 left-0 w-full h-full"
         style={{
           background: 'linear-gradient(45deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%)',
           zIndex: 0
@@ -72,7 +72,7 @@ export default function VideoBackground({ className }: VideoBackgroundProps) {
       
       <video
         ref={videoRef}
-        className={`fixed top-0 left-0 w-full h-screen object-cover ${className}`}
+        className={`absolute top-0 left-0 w-full h-full object-cover ${className}`}
         style={{
           filter: 'brightness(0.4) contrast(1.2)',
           zIndex: 1

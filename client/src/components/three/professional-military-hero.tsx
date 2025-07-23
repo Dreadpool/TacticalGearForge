@@ -275,7 +275,7 @@ export default function ProfessionalMilitaryHero({ className = '' }: Professiona
       />
 
       {/* Corner brackets like weapon sights */}
-      <div className="fixed inset-0 pointer-events-none" style={{ zIndex: 10 }}>
+      <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 10 }}>
         {/* Top left */}
         <div className="absolute top-8 left-8 w-16 h-16 border-l-4 border-t-4 border-night-vision opacity-70 animate-pulse" />
         {/* Top right */}
