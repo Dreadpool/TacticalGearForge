@@ -207,4 +207,19 @@
     color: var(--color-night-vision);
     z-index: -2;
   }
+
+  /* Scan lines animation */
+  @keyframes scanlines {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(4px); }
+  }
+
+  /* Sketchfab rotation loading animation */
+  @keyframes rotateLoad {
+    0% { transform: rotate(0deg) scale(1); }
+    25% { transform: rotate(90deg) scale(1.02); }
+    50% { transform: rotate(180deg) scale(1); }
+    75% { transform: rotate(270deg) scale(1.02); }
+    100% { transform: rotate(360deg) scale(1); }
+  }
 }

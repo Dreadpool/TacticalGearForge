@@ -1,7 +1,29 @@
 import { useRef, useEffect, useState } from 'react';
 import * as THREE from 'three';
 import { motion } from 'framer-motion';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+
+// Typewriter Text Component
+interface TypewriterTextProps {
+  text: string;
+  speed?: number;
+}
+
+const TypewriterText = ({ text, speed = 50 }: TypewriterTextProps) => {
+  const [displayText, setDisplayText] = useState('');
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    if (currentIndex < text.length) {
+      const timeout = setTimeout(() => {
+        setDisplayText(prev => prev + text[currentIndex]);
+        setCurrentIndex(prev => prev + 1);
+      }, speed);
+      return () => clearTimeout(timeout);
+    }
+  }, [currentIndex, text, speed]);
+
+  return <span>{displayText}</span>;
+};
 
 interface ProfessionalMilitaryHeroProps {
   className?: string;
@@ -37,11 +59,11 @@ const MilitaryHUD = ({ mousePosition }: { mousePosition: { x: number, y: number 
     {/* Military Data Readout */}
     <div className="fixed top-6 left-24 z-20 text-olive-drab font-mono-terminal text-xs">
       <div className="bg-ops-black bg-opacity-80 p-4 border border-ranger-green border-opacity-40">
-        <div className="text-fde mb-2 font-hud font-semibold">HOLOSUN HS510C STATUS</div>
-        <div className="text-ranger-green">STATUS: OPERATIONAL</div>
-        <div className="text-ranger-green">RETICLE: CIRCLE DOT</div>
-        <div className="text-ranger-green">POWER: SOLAR/BATTERY</div>
-        <div className="text-ranger-green">CONDITION: FIELD READY</div>
+        <div className="text-night-vision mb-2 font-hud font-semibold">TACTICAL OPERATIONS</div>
+        <div className="text-night-vision">STATUS: LOADING</div>
+        <div className="text-night-vision">SYSTEM: INITIALIZING</div>
+        <div className="text-night-vision">SECURITY: CLASSIFIED</div>
+        <div className="text-night-vision">ACCESS: AUTHORIZED</div>
       </div>
     </div>
   </>
@@ -127,131 +149,39 @@ export default function ProfessionalMilitaryHero({ className = '' }: Professiona
     scene.add(spotLight);
     scene.add(spotLight.target);
 
-    // Load professional Holosun HS510C model
-    const opticGroup = new THREE.Group();
-    const gltfLoader = new GLTFLoader();
+    // Create tactical loading spinner
+    const loadingGroup = new THREE.Group();
     
-    // Create professional tactical platform for the optic
-    const platformGeometry = new THREE.CylinderGeometry(1.5, 1.5, 0.1, 16);
-    const platformMaterial = new THREE.MeshStandardMaterial({
-      color: 0x2d2d2d, // Dark gunmetal
-      roughness: 0.8,
-      metalness: 0.6
+    // Tactical loading ring
+    const ringGeometry = new THREE.TorusGeometry(1.2, 0.08, 8, 32);
+    const ringMaterial = new THREE.MeshStandardMaterial({
+      color: 0x00FF41, // Phosphor green
+      emissive: 0x004400,
+      roughness: 0.3,
+      metalness: 0.7
     });
-    const platform = new THREE.Mesh(platformGeometry, platformMaterial);
-    platform.position.set(0, 0, 0);
-    platform.castShadow = true;
-    platform.receiveShadow = true;
-    opticGroup.add(platform);
+    const loadingRing = new THREE.Mesh(ringGeometry, ringMaterial);
+    loadingRing.position.set(0, 0, 0);
+    loadingGroup.add(loadingRing);
 
-    // Picatinny rail base for authenticity
-    const railGeometry = new THREE.BoxGeometry(2.5, 0.15, 0.25);
-    const railMaterial = new THREE.MeshStandardMaterial({
-      color: 0x1a1a1a, // Matte black
-      roughness: 0.9,
-      metalness: 0.4
-    });
-    const rail = new THREE.Mesh(railGeometry, railMaterial);
-    rail.position.set(0, 0.08, 0);
-    rail.castShadow = true;
-    opticGroup.add(rail);
-
-    // Create rail slots for authenticity
-    for (let i = 0; i < 10; i++) {
-      const slotGeometry = new THREE.BoxGeometry(0.12, 0.03, 0.27);
-      const slot = new THREE.Mesh(slotGeometry, railMaterial);
-      slot.position.set(-1.2 + i * 0.24, 0.095, 0);
-      opticGroup.add(slot);
+    // Inner tactical elements
+    for (let i = 0; i < 8; i++) {
+      const dotGeometry = new THREE.SphereGeometry(0.06, 8, 8);
+      const dotMaterial = new THREE.MeshStandardMaterial({
+        color: 0x00FF41,
+        emissive: 0x002200,
+        roughness: 0.2,
+        metalness: 0.5
+      });
+      const dot = new THREE.Mesh(dotGeometry, dotMaterial);
+      const angle = (i / 8) * Math.PI * 2;
+      dot.position.set(Math.cos(angle) * 0.8, 0, Math.sin(angle) * 0.8);
+      loadingGroup.add(dot);
     }
 
-    // Load the professional Holosun model (fallback to custom if not available)
-    try {
-      // Create a professional red dot sight as fallback
-      const opticBodyGeometry = new THREE.BoxGeometry(0.8, 0.5, 0.6);
-      const opticBodyMaterial = new THREE.MeshStandardMaterial({
-        color: 0x1a1a1a, // Matte black tactical finish
-        roughness: 0.85,
-        metalness: 0.15
-      });
-      const opticBody = new THREE.Mesh(opticBodyGeometry, opticBodyMaterial);
-      opticBody.position.set(0, 0.35, 0);
-      opticBody.castShadow = true;
-      opticBody.receiveShadow = true;
-      opticGroup.add(opticBody);
-
-      // Solar panel (distinctive Holosun feature)
-      const solarGeometry = new THREE.BoxGeometry(0.6, 0.02, 0.25);
-      const solarMaterial = new THREE.MeshStandardMaterial({
-        color: 0x001122, // Dark blue solar panel
-        roughness: 0.1,
-        metalness: 0.8
-      });
-      const solar = new THREE.Mesh(solarGeometry, solarMaterial);
-      solar.position.set(0, 0.61, 0.15);
-      solar.castShadow = true;
-      opticGroup.add(solar);
-
-      // Large viewing window (Holosun signature)
-      const windowGeometry = new THREE.CylinderGeometry(0.25, 0.25, 0.05, 16);
-      const windowMaterial = new THREE.MeshPhysicalMaterial({
-        color: 0x002200, // Dark green tint
-        roughness: 0.05,
-        metalness: 0.1,
-        transmission: 0.95,
-        thickness: 0.02,
-        clearcoat: 1.0
-      });
-      const window = new THREE.Mesh(windowGeometry, windowMaterial);
-      window.position.set(0, 0.35, 0.32);
-      window.rotation.x = Math.PI / 2;
-      window.castShadow = true;
-      opticGroup.add(window);
-
-      // Rear sight window
-      const rearWindow = new THREE.Mesh(windowGeometry, windowMaterial);
-      rearWindow.position.set(0, 0.35, -0.32);
-      rearWindow.rotation.x = Math.PI / 2;
-      rearWindow.castShadow = true;
-      opticGroup.add(rearWindow);
-
-      // Brightness control buttons
-      const buttonGeometry = new THREE.CylinderGeometry(0.03, 0.03, 0.08, 8);
-      const buttonMaterial = new THREE.MeshStandardMaterial({
-        color: 0x333333,
-        roughness: 0.6,
-        metalness: 0.7
-      });
-      
-      const upButton = new THREE.Mesh(buttonGeometry, buttonMaterial);
-      upButton.position.set(-0.42, 0.45, 0);
-      upButton.rotation.z = Math.PI / 2;
-      upButton.castShadow = true;
-      opticGroup.add(upButton);
-
-      const downButton = new THREE.Mesh(buttonGeometry, buttonMaterial);
-      downButton.position.set(-0.42, 0.25, 0);
-      downButton.rotation.z = Math.PI / 2;
-      downButton.castShadow = true;
-      opticGroup.add(downButton);
-
-      // Holosun logo area
-      const logoGeometry = new THREE.BoxGeometry(0.2, 0.08, 0.01);
-      const logoMaterial = new THREE.MeshStandardMaterial({
-        color: 0x444444,
-        roughness: 0.4,
-        metalness: 0.6
-      });
-      const logo = new THREE.Mesh(logoGeometry, logoMaterial);
-      logo.position.set(0.25, 0.35, 0.31);
-      opticGroup.add(logo);
-
-    } catch (error) {
-      console.log('Using fallback optic model');
-    }
-
-    opticGroup.position.set(0, 1.5, 0);
-    opticGroup.scale.set(2.5, 2.5, 2.5);
-    scene.add(opticGroup);
+    loadingGroup.position.set(0, 1.5, 0);
+    loadingGroup.scale.set(1.5, 1.5, 1.5);
+    scene.add(loadingGroup);
 
     // Professional military base ground
     const groundGeometry = new THREE.PlaneGeometry(80, 80);
@@ -322,24 +252,25 @@ export default function ProfessionalMilitaryHero({ className = '' }: Professiona
       }
       dustParticles.geometry.attributes.position.needsUpdate = true;
 
-      // Professional tactical optic animation
-      opticGroup.rotation.y = mousePosition.x * 0.15 + time * 0.1;
-      opticGroup.rotation.x = mousePosition.y * 0.1;
-      opticGroup.position.y = 1.5 + Math.sin(time * 0.8) * 0.05;
+      // Tactical loading animation
+      loadingRing.rotation.z = time * 0.8;
+      loadingGroup.rotation.y = time * 0.3;
+      loadingGroup.position.y = 1.5 + Math.sin(time * 0.5) * 0.1;
 
-      // Optic components animation on scroll (inspection mode)
-      const inspection = scrollProgress > 0.4;
-      if (inspection) {
-        opticGroup.scale.set(4, 4, 4); // Zoom in for detail view
-        opticGroup.rotation.y = time * 0.2; // Slow rotation for inspection
-      } else {
-        opticGroup.scale.set(3, 3, 3); // Normal scale
-      }
+      // Animate tactical dots
+      loadingGroup.children.forEach((child, index) => {
+        if (index > 0) { // Skip the ring
+          const dotTime = time + (index * 0.2);
+          child.scale.setScalar(1 + Math.sin(dotTime * 2) * 0.3);
+          (child.material as THREE.MeshStandardMaterial).emissiveIntensity = 
+            0.3 + Math.sin(dotTime * 3) * 0.2;
+        }
+      });
 
-      // Camera positioning for optic showcase
-      camera.position.z = 8 - scrollProgress * 2;
-      camera.position.y = 2 + scrollProgress * 0.5;
-      camera.lookAt(opticGroup.position);
+      // Camera positioning
+      camera.position.z = 8 - scrollProgress * 1;
+      camera.position.y = 2 + scrollProgress * 0.2;
+      camera.lookAt(loadingGroup.position);
 
       renderer.render(scene, camera);
       animationIdRef.current = requestAnimationFrame(animate);
@@ -392,34 +323,58 @@ export default function ProfessionalMilitaryHero({ className = '' }: Professiona
     <div className={`relative w-full h-screen overflow-hidden bg-ops-black ${className}`}>
       {/* SWAT Training Video Background */}
       <video
-        className="absolute inset-0 w-full h-full object-cover"
         style={{
-          filter: 'contrast(1.3) brightness(1.0) saturate(1.1)',
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100vh',
+          objectFit: 'cover',
+          filter: 'brightness(0.4) contrast(1.2)',
+          zIndex: -1,
+          willChange: 'transform'
         }}
         autoPlay
         muted
         loop
         playsInline
+        preload="auto"
+        poster="/attached_assets/concrete-texture.jpg"
       >
         <source src="/swat-training.mp4" type="video/mp4" />
         <source src="/attached_assets/090406552-swat-officers-prepare-training_1753253747041.mp4" type="video/mp4" />
       </video>
 
-      {/* Professional military vignette */}
+      {/* Dark gradient overlay */}
       <div 
         className="absolute inset-0 pointer-events-none"
         style={{
-          background: 'radial-gradient(circle at center, transparent 45%, rgba(60, 52, 31, 0.6) 100%)'
+          background: 'linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, transparent 30%, transparent 70%, rgba(0,0,0,0.8) 100%)',
+          willChange: 'transform'
         }}
       />
 
-      {/* Tactical overlay pattern */}
+      {/* Scan lines animation */}
       <div 
-        className="absolute inset-0 pointer-events-none opacity-10"
+        className="absolute inset-0 pointer-events-none opacity-20"
         style={{
-          backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(66, 84, 57, 0.2) 4px, rgba(66, 84, 57, 0.2) 5px)'
+          background: 'repeating-linear-gradient(0deg, transparent 0px, transparent 2px, rgba(0, 255, 65, 0.1) 2px, rgba(0, 255, 65, 0.1) 4px)',
+          animation: 'scanlines 2s linear infinite',
+          willChange: 'transform'
         }}
       />
+
+      {/* Corner brackets like weapon sights */}
+      <div className="fixed inset-0 pointer-events-none z-20">
+        {/* Top left */}
+        <div className="absolute top-8 left-8 w-16 h-16 border-l-4 border-t-4 border-night-vision opacity-70 animate-pulse" />
+        {/* Top right */}
+        <div className="absolute top-8 right-8 w-16 h-16 border-r-4 border-t-4 border-night-vision opacity-70 animate-pulse" />
+        {/* Bottom left */}
+        <div className="absolute bottom-8 left-8 w-16 h-16 border-l-4 border-b-4 border-night-vision opacity-70 animate-pulse" />
+        {/* Bottom right */}
+        <div className="absolute bottom-8 right-8 w-16 h-16 border-r-4 border-b-4 border-night-vision opacity-70 animate-pulse" />
+      </div>
 
       {/* 3D Tactical Equipment Overlay */}
       <div ref={mountRef} className="absolute inset-0 pointer-events-none" />
@@ -438,24 +393,60 @@ export default function ProfessionalMilitaryHero({ className = '' }: Professiona
           <motion.h1 
             className="text-6xl md:text-8xl font-military-header mb-8 tracking-widest"
             style={{ 
-              textShadow: '0 0 30px rgba(200, 168, 130, 0.4)',
-              color: 'var(--color-fde)'
+              textShadow: '0 0 30px rgba(0, 255, 65, 0.6)',
+              color: '#00FF41',
+              filter: 'drop-shadow(0 0 10px #00FF41)'
             }}
           >
-            HOLOSUN OPTICS
+            TACTICAL OPERATIONS
           </motion.h1>
-          <motion.p 
-            className="text-xl md:text-2xl mb-10 font-hud font-medium tracking-wide"
-            style={{ color: 'var(--color-ranger-green)' }}
+          <motion.div 
+            className="text-xl md:text-2xl mb-10 font-mono-terminal tracking-wide"
+            style={{ color: '#00FF41' }}
           >
-            SOLAR-POWERED PRECISION SIGHTS
-          </motion.p>
+            <TypewriterText text="LOADING ARMORY SYSTEMS..." />
+          </motion.div>
+          
+          {/* Sketchfab Holosun Embed */}
+          <motion.div 
+            className="mb-8"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1, delay: 0.5 }}
+          >
+            <div className="sketchfab-embed-wrapper" style={{ width: '400px', height: '300px', margin: '0 auto' }}>
+              <iframe 
+                title="Holosun HS510C Red Dot Sight | Game-Ready (PBR)" 
+                frameBorder="0" 
+                allowFullScreen
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  borderRadius: '8px',
+                  border: '2px solid #00FF41',
+                  boxShadow: '0 0 20px rgba(0, 255, 65, 0.3)',
+                  transform: 'rotate(0deg)',
+                  animation: 'rotateLoad 4s ease-in-out infinite'
+                }}
+                src="https://sketchfab.com/models/2499516c0afd4698b72e4e9f8ab0e140/embed?autostart=1&ui_controls=0&ui_infos=0&ui_stop=0&ui_watermark=0&ui_help=0&ui_settings=0&ui_vr=0&ui_fullscreen=0&ui_annotations=0"
+              />
+            </div>
+          </motion.div>
+
           <motion.button
-            className="bg-ranger-green hover:bg-olive-drab text-fde font-tactical font-bold py-4 px-8 text-lg tracking-wider border-2 border-coyote-brown transition-all duration-300"
-            whileHover={{ scale: 1.05, boxShadow: '0 0 20px rgba(129, 97, 60, 0.5)' }}
+            className="bg-ops-black hover:bg-night-vision text-night-vision hover:text-ops-black font-tactical font-bold py-4 px-8 text-lg tracking-wider border-2 border-night-vision transition-all duration-300"
+            style={{
+              textShadow: '0 0 10px #00FF41',
+              boxShadow: '0 0 20px rgba(0, 255, 65, 0.2)'
+            }}
+            whileHover={{ 
+              scale: 1.05, 
+              boxShadow: '0 0 30px rgba(0, 255, 65, 0.5)',
+              filter: 'drop-shadow(0 0 15px #00FF41)'
+            }}
             whileTap={{ scale: 0.98 }}
           >
-            DEPLOY EQUIPMENT
+            ENTER ARMORY
           </motion.button>
         </div>
       </motion.div>
