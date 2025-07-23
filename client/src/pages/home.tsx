@@ -24,7 +24,7 @@ export default function Home() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
-  const featuredProducts = products?.slice(0, 3) || [];
+  const featuredProducts = products || [];
 
   // Add to cart mutation
   const addToCartMutation = useMutation({
