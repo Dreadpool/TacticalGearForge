@@ -1,13 +1,16 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useToast } from "@/hooks/use-toast";
 import Navigation from "@/components/navigation";
 import HeroSection from "@/components/hero-section";
 import ProfessionalMilitaryHero from "@/components/three/professional-military-hero";
 import VideoBackground from "@/components/video-background";
 import LoadingScreen from "@/components/loading-screen";
 import ProductShowcase3D from "@/components/product-showcase-3d";
-import ProductCard from "@/components/product-card";
+import ProductCardModern from "@/components/product-card-modern";
+import SkeletonLoader from "@/components/skeleton-loader";
 import Footer from "@/components/footer";
 import { Link } from "wouter";
 import { Shield, Backpack, Eye, Gavel } from "lucide-react";
@@ -18,8 +21,50 @@ export default function Home() {
   const { data: products, isLoading } = useQuery<Product[]>({
     queryKey: ['/api/products'],
   });
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
 
   const featuredProducts = products?.slice(0, 3) || [];
+
+  // Add to cart mutation
+  const addToCartMutation = useMutation({
+    mutationFn: async (product: Product) => {
+      const response = await fetch('/api/cart', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          productId: product.id, 
+          quantity: 1 
+        })
+      });
+      if (!response.ok) throw new Error('Failed to add to cart');
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/cart'] });
+      toast({
+        title: "Added to Cart",
+        description: "Item successfully added to your tactical loadout",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Error",
+        description: "Failed to add item to cart",
+        variant: "destructive",
+      });
+    }
+  });
+
+  const handleAddToCart = (product: Product) => {
+    addToCartMutation.mutate(product);
+  };
+
+  const handleViewDetails = (product: Product) => {
+    window.location.href = `/products/${product.id}`;
+  };
 
   const categories = [
     { name: "PROTECTION", icon: Shield, description: "Body armor, helmets, protective equipment" },
@@ -70,30 +115,18 @@ export default function Home() {
           
           {isLoading ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {[...Array(3)].map((_, i) => (
-                <div key={i} className="hud-border bg-steel-gray bg-opacity-20 p-6 animate-pulse">
-                  <div className="w-full h-48 bg-steel-gray bg-opacity-40 mb-4"></div>
-                  <div className="h-4 bg-steel-gray bg-opacity-40 mb-2"></div>
-                  <div className="h-6 bg-steel-gray bg-opacity-40 mb-2"></div>
-                  <div className="h-16 bg-steel-gray bg-opacity-40 mb-4"></div>
-                  <div className="flex justify-between items-center">
-                    <div className="h-8 w-20 bg-steel-gray bg-opacity-40"></div>
-                    <div className="h-10 w-32 bg-steel-gray bg-opacity-40"></div>
-                  </div>
-                </div>
-              ))}
+              <SkeletonLoader count={3} />
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {featuredProducts.map((product, index) => (
-                <motion.div
+                <ProductCardModern
                   key={product.id}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                >
-                  <ProductCard product={product} />
-                </motion.div>
+                  product={product}
+                  index={index}
+                  onAddToCart={handleAddToCart}
+                  onViewDetails={handleViewDetails}
+                />
               ))}
             </div>
           )}
