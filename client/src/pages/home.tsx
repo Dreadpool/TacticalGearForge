@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import Navigation from "@/components/navigation";
 import HeroSection from "@/components/hero-section";
+import MilitaryHeroScene from "@/components/three/military-hero-scene";
 import ProductShowcase3D from "@/components/product-showcase-3d";
 import ProductCard from "@/components/product-card";
 import Footer from "@/components/footer";
@@ -34,7 +35,7 @@ export default function Home() {
     <div className="min-h-screen bg-ops-black text-white">
       <Navigation />
       
-      <HeroSection />
+      <MilitaryHeroScene />
 
       {/* Featured Products */}
       <section className="py-20 relative">
