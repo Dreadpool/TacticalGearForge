@@ -6,7 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/home";
 import Products from "@/pages/products";
-import ProductDetail from "@/pages/product-detail";
+import ProductDetailModern from "@/pages/product-detail-modern";
 import Cart from "@/pages/cart";
 import LoadingScreen from "@/components/loading-screen";
 import { useState, useEffect } from "react";
@@ -16,7 +16,7 @@ function Router() {
     <Switch>
       <Route path="/" component={Home} />
       <Route path="/products" component={Products} />
-      <Route path="/products/:id" component={ProductDetail} />
+      <Route path="/products/:id" component={ProductDetailModern} />
       <Route path="/cart" component={Cart} />
       <Route component={NotFound} />
     </Switch>
