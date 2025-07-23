@@ -247,6 +247,31 @@ export class MemStorage implements IStorage {
         })
       },
       
+      // HOLSTER ADAPTERS - GBRS GROUP APPROVED
+      {
+        name: "TRUE NORTH CONCEPTS MODULAR HOLSTER ADAPTER",
+        model: "MHA-001-BLK",
+        description: "Component of the official GBRS Group belt build-out for mounting a holster. Eliminates unwanted movement, flex, and sliding common to factory polymer belt adaptors by clamping the belt between aluminum adapter and aluminum belt bars.",
+        price: "84.99",
+        category: "PROTECTION",
+        imageUrl: "/api/assets/MHA-scaled.jpg",
+        inStock: true,
+        specifications: JSON.stringify({
+          material: "DFARS grade 6061-T6 aluminum",
+          thickness: "0.190″ thick domestically produced aluminum",
+          finish: "Type 3 MIL-SPEC hard coat anodized",
+          weight: "2 oz heavier than UBL",
+          cantAdjustment: "20° total range (10° forward + 10° negative)",
+          heightAdjustment: "Three mounting points set 1/2″ apart",
+          beltCompatibility: "Up to 2.25″ wide belts",
+          mounting: "MOLLE/PALS, standard belt, Tek-Lok™, MALICE clips",
+          holsterCompatibility: "Safariland 3-hole pattern, QLS/MLS/ELS, G-Code SOC/OSL/XST",
+          endorsement: "GBRS Group Official Component",
+          warranty: "Lifetime replacement guarantee",
+          berryCompliant: true
+        })
+      },
+      
       // ADDITIONAL VERIFIED ITEMS
       {
         name: "CRYE PRECISION AVS 1000 PACK",
