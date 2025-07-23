@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 import Navigation from "@/components/navigation";
-import HeroSection from "@/components/hero-section";
+
 import ProfessionalMilitaryHero from "@/components/three/professional-military-hero";
 import VideoBackground from "@/components/video-background";
 import LoadingScreen from "@/components/loading-screen";
