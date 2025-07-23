@@ -57,16 +57,7 @@ const MilitaryHUD = ({ mousePosition }: { mousePosition: { x: number, y: number 
     <div className="fixed bottom-6 left-6 w-12 h-12 border-l-2 border-b-2 border-ranger-green opacity-50 z-20"></div>
     <div className="fixed bottom-6 right-6 w-12 h-12 border-r-2 border-b-2 border-ranger-green opacity-50 z-20"></div>
 
-    {/* Military Data Readout */}
-    <div className="fixed top-6 left-24 z-20 text-olive-drab font-mono-terminal text-xs">
-      <div className="bg-ops-black bg-opacity-80 p-4 border border-ranger-green border-opacity-40">
-        <div className="text-night-vision mb-2 font-hud font-semibold">TACTICAL OPERATIONS</div>
-        <div className="text-night-vision">STATUS: LOADING</div>
-        <div className="text-night-vision">SYSTEM: INITIALIZING</div>
-        <div className="text-night-vision">SECURITY: CLASSIFIED</div>
-        <div className="text-night-vision">ACCESS: AUTHORIZED</div>
-      </div>
-    </div>
+
   </>
 );
 
