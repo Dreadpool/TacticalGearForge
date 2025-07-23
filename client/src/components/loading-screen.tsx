@@ -34,11 +34,11 @@ export default function LoadingScreen({ onEnterArmory }: LoadingScreenProps) {
   const [loadingComplete, setLoadingComplete] = useState(false);
 
   const loadingSteps = [
-    "INITIALIZING TACTICAL SYSTEMS...",
-    "LOADING ARMORY DATABASE...",
-    "AUTHENTICATING CLEARANCE...",
-    "PREPARING EQUIPMENT CATALOG...",
-    "SYSTEM READY"
+    "INITIALIZING PRECISION SYSTEMS...",
+    "LOADING GEAR DATABASE...",
+    "AUTHENTICATING OPERATOR ACCESS...",
+    "PREPARING BATTLE-TESTED CATALOG...",
+    "ARMORY READY"
   ];
 
   useEffect(() => {
@@ -98,7 +98,7 @@ export default function LoadingScreen({ onEnterArmory }: LoadingScreenProps) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          TACTICAL OPERATIONS
+          PRECISION GEAR CO
         </motion.h1>
 
         {/* Sketchfab Holosun Embed */}
