@@ -1,6 +1,7 @@
 import { useRef, useEffect, useState } from 'react';
 import * as THREE from 'three';
 import { motion } from 'framer-motion';
+import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 
 interface ProfessionalMilitaryHeroProps {
   className?: string;
@@ -36,10 +37,10 @@ const MilitaryHUD = ({ mousePosition }: { mousePosition: { x: number, y: number 
     {/* Military Data Readout */}
     <div className="fixed top-6 left-24 z-20 text-olive-drab font-mono-terminal text-xs">
       <div className="bg-ops-black bg-opacity-80 p-4 border border-ranger-green border-opacity-40">
-        <div className="text-fde mb-2 font-hud font-semibold">TACTICAL EQUIPMENT STATUS</div>
+        <div className="text-fde mb-2 font-hud font-semibold">TACTICAL OPTIC STATUS</div>
         <div className="text-ranger-green">STATUS: OPERATIONAL</div>
-        <div className="text-ranger-green">PROTECTION: LEVEL IIIA</div>
-        <div className="text-ranger-green">WEIGHT: 2.3 KG</div>
+        <div className="text-ranger-green">RETICLE: RED DOT</div>
+        <div className="text-ranger-green">MAGNIFICATION: 1X</div>
         <div className="text-ranger-green">CONDITION: FIELD READY</div>
       </div>
     </div>
@@ -89,134 +90,156 @@ export default function ProfessionalMilitaryHero({ className = '' }: Professiona
 
     mountRef.current.appendChild(renderer.domElement);
 
-    // Professional military lighting setup
-    const directionalLight = new THREE.DirectionalLight(0xF5E6B3, 1.0); // Warm military base lighting
-    directionalLight.position.set(12, 8, 6);
+    // Bright tactical equipment lighting for visibility
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 2.5); // Bright white light
+    directionalLight.position.set(8, 12, 6);
     directionalLight.castShadow = true;
     directionalLight.shadow.mapSize.width = 4096;
     directionalLight.shadow.mapSize.height = 4096;
     directionalLight.shadow.camera.near = 0.1;
     directionalLight.shadow.camera.far = 100;
-    directionalLight.shadow.camera.left = -30;
-    directionalLight.shadow.camera.right = 30;
-    directionalLight.shadow.camera.top = 30;
-    directionalLight.shadow.camera.bottom = -30;
+    directionalLight.shadow.camera.left = -20;
+    directionalLight.shadow.camera.right = 20;
+    directionalLight.shadow.camera.top = 20;
+    directionalLight.shadow.camera.bottom = -20;
     directionalLight.shadow.bias = -0.0005;
     scene.add(directionalLight);
 
-    // Ambient lighting with authentic military color temperature
-    const ambientLight = new THREE.AmbientLight(0x425439, 0.4); // Ranger green ambient
+    // Strong ambient lighting for equipment visibility
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.2); // Bright ambient
     scene.add(ambientLight);
 
-    // Key fill light for tactical gear visibility
-    const fillLight = new THREE.PointLight(0xC8A882, 0.6, 15); // FDE color
-    fillLight.position.set(-8, 4, 8);
+    // Key fill light for optic details
+    const fillLight = new THREE.PointLight(0xffffff, 1.8, 20); // Bright fill
+    fillLight.position.set(-6, 8, 8);
     scene.add(fillLight);
 
-    // Rim light for gear definition
-    const rimLight = new THREE.PointLight(0x4A4E54, 0.8, 12); // Wolf gray
-    rimLight.position.set(8, 6, -4);
+    // Rim light for equipment definition
+    const rimLight = new THREE.PointLight(0xffffff, 1.5, 15); // Bright rim
+    rimLight.position.set(6, 6, -4);
     scene.add(rimLight);
 
-    // Create professional tactical vest with authentic textures
-    const vestGroup = new THREE.Group();
+    // Additional spot light for optic showcase
+    const spotLight = new THREE.SpotLight(0xffffff, 2.0, 25, Math.PI / 6, 0.25, 1);
+    spotLight.position.set(0, 8, 8);
+    spotLight.target.position.set(0, 1.5, 0);
+    spotLight.castShadow = true;
+    scene.add(spotLight);
+    scene.add(spotLight.target);
 
-    // Load authentic camouflage texture
-    const textureLoader = new THREE.TextureLoader();
-    
-    // Create realistic military fabric material
-    const createMilitaryFabricMaterial = (color: number) => {
-      return new THREE.MeshStandardMaterial({
-        color: color,
-        roughness: 0.85,
-        metalness: 0.05,
-        normalScale: new THREE.Vector2(0.8, 0.8)
-      });
-    };
+    // Create professional tactical optic display
+    const opticGroup = new THREE.Group();
 
-    // Main vest body with authentic olive drab
-    const vestGeometry = new THREE.BoxGeometry(2.2, 3.0, 0.35);
-    const vestMaterial = createMilitaryFabricMaterial(0x3C341F); // Authentic olive drab
-    const vestMesh = new THREE.Mesh(vestGeometry, vestMaterial);
-    vestMesh.castShadow = true;
-    vestMesh.receiveShadow = true;
-    vestGroup.add(vestMesh);
+    // Professional tactical red dot sight body
+    const opticBodyGeometry = new THREE.CylinderGeometry(0.15, 0.18, 0.8, 12);
+    const opticBodyMaterial = new THREE.MeshStandardMaterial({
+      color: 0x1a1a1a, // Matte black tactical finish
+      roughness: 0.8,
+      metalness: 0.2,
+      envMapIntensity: 0.3
+    });
+    const opticBody = new THREE.Mesh(opticBodyGeometry, opticBodyMaterial);
+    opticBody.rotation.z = Math.PI / 2;
+    opticBody.castShadow = true;
+    opticBody.receiveShadow = true;
+    opticGroup.add(opticBody);
 
-    // MOLLE webbing system with authentic ranger green
-    const molleMaterial = createMilitaryFabricMaterial(0x425439); // Ranger green
-    for (let row = 0; row < 5; row++) {
-      for (let col = 0; col < 4; col++) {
-        const webbing = new THREE.Mesh(
-          new THREE.BoxGeometry(0.08, 0.4, 0.025),
-          molleMaterial
-        );
-        webbing.position.set(
-          -0.7 + col * 0.47,
-          0.8 - row * 0.4,
-          0.19
-        );
-        webbing.castShadow = true;
-        vestGroup.add(webbing);
-      }
+    // Lens housing with authentic glass
+    const lensGeometry = new THREE.CylinderGeometry(0.12, 0.12, 0.05, 16);
+    const lensMaterial = new THREE.MeshPhysicalMaterial({
+      color: 0x004400, // Dark green tint for tactical optics
+      roughness: 0.05,
+      metalness: 0.1,
+      transmission: 0.9,
+      thickness: 0.02,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.05
+    });
+    const frontLens = new THREE.Mesh(lensGeometry, lensMaterial);
+    frontLens.position.set(0.35, 0, 0);
+    frontLens.rotation.z = Math.PI / 2;
+    frontLens.castShadow = true;
+    opticGroup.add(frontLens);
+
+    // Rear lens
+    const rearLens = new THREE.Mesh(lensGeometry, lensMaterial);
+    rearLens.position.set(-0.35, 0, 0);
+    rearLens.rotation.z = Math.PI / 2;
+    rearLens.castShadow = true;
+    opticGroup.add(rearLens);
+
+    // Tactical mount with authentic picatinny rail attachment
+    const mountGeometry = new THREE.BoxGeometry(0.9, 0.25, 0.12);
+    const mountMaterial = new THREE.MeshStandardMaterial({
+      color: 0x2d2d2d, // Dark gunmetal
+      roughness: 0.6,
+      metalness: 0.8
+    });
+    const mount = new THREE.Mesh(mountGeometry, mountMaterial);
+    mount.position.set(0, -0.2, 0);
+    mount.castShadow = true;
+    opticGroup.add(mount);
+
+    // Picatinny rail slots for authenticity
+    for (let i = 0; i < 8; i++) {
+      const slotGeometry = new THREE.BoxGeometry(0.08, 0.03, 0.14);
+      const slot = new THREE.Mesh(slotGeometry, mountMaterial);
+      slot.position.set(-0.35 + i * 0.1, -0.18, 0);
+      opticGroup.add(slot);
     }
 
-    // Tactical pouches with coyote brown
-    const pouchMaterial = createMilitaryFabricMaterial(0x81613C); // Coyote brown
+    // Windage/elevation adjustment turrets
+    const turretGeometry = new THREE.CylinderGeometry(0.06, 0.06, 0.15, 8);
+    const turretMaterial = new THREE.MeshStandardMaterial({
+      color: 0x1a1a1a,
+      roughness: 0.7,
+      metalness: 0.3
+    });
     
-    const leftPouch = new THREE.Mesh(
-      new THREE.BoxGeometry(0.5, 0.7, 0.25),
-      pouchMaterial
-    );
-    leftPouch.position.set(-1.2, 0.4, 0.15);
-    leftPouch.castShadow = true;
-    vestGroup.add(leftPouch);
+    const windageTurret = new THREE.Mesh(turretGeometry, turretMaterial);
+    windageTurret.position.set(0.1, 0, 0.22);
+    windageTurret.castShadow = true;
+    opticGroup.add(windageTurret);
 
-    const rightPouch = new THREE.Mesh(
-      new THREE.BoxGeometry(0.5, 0.7, 0.25),
-      pouchMaterial
-    );
-    rightPouch.position.set(1.2, 0.4, 0.15);
-    rightPouch.castShadow = true;
-    vestGroup.add(rightPouch);
+    const elevationTurret = new THREE.Mesh(turretGeometry, turretMaterial);
+    elevationTurret.position.set(0.1, 0.22, 0);
+    elevationTurret.rotation.x = Math.PI / 2;
+    elevationTurret.castShadow = true;
+    opticGroup.add(elevationTurret);
 
-    // Tactical belt with authentic wolf gray hardware
-    const beltMaterial = new THREE.MeshStandardMaterial({
-      color: 0x4A4E54, // Wolf gray
+    // Red dot LED housing
+    const ledHousingGeometry = new THREE.SphereGeometry(0.03, 8, 6);
+    const ledHousingMaterial = new THREE.MeshStandardMaterial({
+      color: 0xff0000,
+      emissive: 0x330000,
+      roughness: 0.2,
+      metalness: 0.1
+    });
+    const ledHousing = new THREE.Mesh(ledHousingGeometry, ledHousingMaterial);
+    ledHousing.position.set(-0.15, 0.15, 0);
+    opticGroup.add(ledHousing);
+
+    // Authentic tactical scope body texture details
+    const detailRingGeometry = new THREE.TorusGeometry(0.16, 0.015, 6, 12);
+    const detailRingMaterial = new THREE.MeshStandardMaterial({
+      color: 0x333333,
       roughness: 0.4,
       metalness: 0.6
     });
+    
+    const frontRing = new THREE.Mesh(detailRingGeometry, detailRingMaterial);
+    frontRing.position.set(0.25, 0, 0);
+    frontRing.rotation.y = Math.PI / 2;
+    opticGroup.add(frontRing);
 
-    const belt = new THREE.Mesh(
-      new THREE.BoxGeometry(2.0, 0.18, 0.06),
-      beltMaterial
-    );
-    belt.position.set(0, -1.3, 0.05);
-    belt.castShadow = true;
-    vestGroup.add(belt);
+    const rearRing = new THREE.Mesh(detailRingGeometry, detailRingMaterial);
+    rearRing.position.set(-0.25, 0, 0);
+    rearRing.rotation.y = Math.PI / 2;
+    opticGroup.add(rearRing);
 
-    // Professional tactical helmet with authentic finish
-    const helmetGeometry = new THREE.SphereGeometry(0.85, 20, 16, 0, Math.PI * 2, 0, Math.PI * 0.75);
-    const helmetMaterial = createMilitaryFabricMaterial(0x3C341F); // Matching olive drab
-    const helmet = new THREE.Mesh(helmetGeometry, helmetMaterial);
-    helmet.position.set(0, 2.7, 0);
-    helmet.castShadow = true;
-    helmet.receiveShadow = true;
-    vestGroup.add(helmet);
-
-    // NVG mount with wolf gray finish
-    const nvgMountGeometry = new THREE.BoxGeometry(0.45, 0.12, 0.12);
-    const nvgMountMaterial = new THREE.MeshStandardMaterial({
-      color: 0x4A4E54, // Wolf gray
-      roughness: 0.3,
-      metalness: 0.8
-    });
-    const nvgMount = new THREE.Mesh(nvgMountGeometry, nvgMountMaterial);
-    nvgMount.position.set(0, 2.8, 0.65);
-    nvgMount.castShadow = true;
-    vestGroup.add(nvgMount);
-
-    vestGroup.position.set(0, 1.5, 0);
-    scene.add(vestGroup);
+    opticGroup.position.set(0, 1.5, 0);
+    opticGroup.scale.set(3, 3, 3); // Scale up for better visibility
+    scene.add(opticGroup);
 
     // Professional military base ground
     const groundGeometry = new THREE.PlaneGeometry(80, 80);
@@ -287,22 +310,24 @@ export default function ProfessionalMilitaryHero({ className = '' }: Professiona
       }
       dustParticles.geometry.attributes.position.needsUpdate = true;
 
-      // Professional tactical vest animation
-      vestGroup.rotation.y = mousePosition.x * 0.02 + time * 0.05;
-      vestGroup.rotation.x = mousePosition.y * 0.015;
-      vestGroup.position.y = 1.5 + Math.sin(time * 0.6) * 0.06;
+      // Professional tactical optic animation
+      opticGroup.rotation.y = mousePosition.x * 0.15 + time * 0.1;
+      opticGroup.rotation.x = mousePosition.y * 0.1;
+      opticGroup.position.y = 1.5 + Math.sin(time * 0.8) * 0.05;
 
-      // Component separation on scroll (military inspection mode)
+      // Optic components animation on scroll (inspection mode)
       const inspection = scrollProgress > 0.4;
-      leftPouch.position.x = inspection ? -1.6 : -1.2;
-      rightPouch.position.x = inspection ? 1.6 : 1.2;
-      helmet.position.y = inspection ? 3.2 : 2.7;
-      belt.position.y = inspection ? -1.7 : -1.3;
+      if (inspection) {
+        opticGroup.scale.set(4, 4, 4); // Zoom in for detail view
+        opticGroup.rotation.y = time * 0.2; // Slow rotation for inspection
+      } else {
+        opticGroup.scale.set(3, 3, 3); // Normal scale
+      }
 
-      // Camera positioning
-      camera.position.z = 8 - scrollProgress * 1.5;
-      camera.position.y = 2 + scrollProgress * 0.3;
-      camera.lookAt(vestGroup.position);
+      // Camera positioning for optic showcase
+      camera.position.z = 8 - scrollProgress * 2;
+      camera.position.y = 2 + scrollProgress * 0.5;
+      camera.lookAt(opticGroup.position);
 
       renderer.render(scene, camera);
       animationIdRef.current = requestAnimationFrame(animate);
@@ -353,26 +378,25 @@ export default function ProfessionalMilitaryHero({ className = '' }: Professiona
 
   return (
     <div className={`relative w-full h-screen overflow-hidden bg-ops-black ${className}`}>
-      {/* Professional Military Base Video Background */}
+      {/* SWAT Training Video Background */}
       <video
         className="absolute inset-0 w-full h-full object-cover"
         style={{
-          filter: 'contrast(1.1) brightness(0.6) saturate(0.7) sepia(0.15)',
+          filter: 'contrast(1.3) brightness(1.0) saturate(1.1)',
         }}
         autoPlay
         muted
         loop
         playsInline
       >
-        <source src="/attached_assets/videos/military-training.mp4" type="video/mp4" />
-        <source src="/attached_assets/videos/military-fallback.mp4" type="video/mp4" />
+        <source src="/attached_assets/090406552-swat-officers-prepare-training_1753253747041.mp4" type="video/mp4" />
       </video>
 
       {/* Professional military vignette */}
       <div 
         className="absolute inset-0 pointer-events-none"
         style={{
-          background: 'radial-gradient(circle at center, transparent 35%, rgba(60, 52, 31, 0.8) 100%)'
+          background: 'radial-gradient(circle at center, transparent 45%, rgba(60, 52, 31, 0.6) 100%)'
         }}
       />
 
@@ -405,13 +429,13 @@ export default function ProfessionalMilitaryHero({ className = '' }: Professiona
               color: 'var(--color-fde)'
             }}
           >
-            TACTICAL ELITE
+            TACTICAL OPTICS
           </motion.h1>
           <motion.p 
             className="text-xl md:text-2xl mb-10 font-hud font-medium tracking-wide"
             style={{ color: 'var(--color-ranger-green)' }}
           >
-            PROFESSIONAL GRADE MILITARY EQUIPMENT
+            PRECISION TARGETING SYSTEMS
           </motion.p>
           <motion.button
             className="bg-ranger-green hover:bg-olive-drab text-fde font-tactical font-bold py-4 px-8 text-lg tracking-wider border-2 border-coyote-brown transition-all duration-300"
