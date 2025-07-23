@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import Navigation from "@/components/navigation";
 import HeroSection from "@/components/hero-section";
-import ProfessionalMilitaryHero from "@/components/three/professional-military-hero";
+import ImmersiveHero from "@/components/immersive-hero";
 import LoadingScreen from "@/components/loading-screen";
 import ProductShowcase3D from "@/components/product-showcase-3d";
 import ProductCard from "@/components/product-card";
@@ -45,7 +45,7 @@ export default function Home() {
       {!showLoading && (
         <>
           <Navigation />
-          <ProfessionalMilitaryHero />
+          <ImmersiveHero />
 
       {/* Featured Products */}
       <section className="py-20 relative">

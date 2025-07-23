@@ -130,6 +130,29 @@
   .animate-pulse-green { animation: pulse-green 2s ease-in-out infinite; }
   .animate-flicker { animation: flicker 0.1s ease-in-out infinite alternate; }
 
+  /* Gradient text utilities */
+  .gradient-text {
+    background: linear-gradient(45deg, #00FF41 0%, #FFA500 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 30px rgba(0, 255, 65, 0.5);
+  }
+
+  .text-shadow-glitch {
+    text-shadow: 
+      0 0 5px #00FF41,
+      0 0 10px #00FF41,
+      0 0 15px #FFA500,
+      0 0 20px #FFA500;
+  }
+
+  /* Scanlines animation */
+  @keyframes scanlines {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(100vh); }
+  }
+
   /* Custom Components */
   .scanline-overlay {
     background: linear-gradient(
