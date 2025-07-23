@@ -60,22 +60,34 @@ export default function VideoBackground({ className }: VideoBackgroundProps) {
   }, []);
 
   return (
-    <video
-      ref={videoRef}
-      className={`fixed top-0 left-0 w-full h-screen object-cover ${className}`}
-      style={{
-        filter: 'brightness(0.4) contrast(1.2)',
-        zIndex: -1
-      }}
-      autoPlay
-      muted
-      loop
-      playsInline
-      preload="auto"
-    >
-      <source src="/swat-training.mp4" type="video/mp4" />
-      <source src="/attached_assets/090406552-swat-officers-prepare-training_1753253747041.mp4" type="video/mp4" />
-      Your browser does not support the video tag.
-    </video>
+    <>
+      {/* Fallback colored background for debugging */}
+      <div 
+        className="fixed top-0 left-0 w-full h-screen"
+        style={{
+          background: 'linear-gradient(45deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%)',
+          zIndex: 0
+        }}
+      />
+      
+      <video
+        ref={videoRef}
+        className={`fixed top-0 left-0 w-full h-screen object-cover ${className}`}
+        style={{
+          filter: 'brightness(0.8) contrast(1.1)',
+          zIndex: 1
+        }}
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+        controls={true} // Temporarily add controls for debugging
+      >
+        <source src="/swat-training.mp4" type="video/mp4" />
+        <source src="/attached_assets/090406552-swat-officers-prepare-training_1753253747041.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+    </>
   );
 }

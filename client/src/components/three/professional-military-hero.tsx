@@ -258,7 +258,7 @@ export default function ProfessionalMilitaryHero({ className = '' }: Professiona
   }, [mousePosition.x, mousePosition.y, scrollProgress]);
 
   return (
-    <div className={`relative w-full h-screen overflow-hidden bg-ops-black ${className}`}>
+    <div className={`relative w-full h-screen overflow-hidden ${className}`}>
       {/* SWAT Training Video Background */}
       <VideoBackground />
 
@@ -266,23 +266,25 @@ export default function ProfessionalMilitaryHero({ className = '' }: Professiona
       <div 
         className="absolute inset-0 pointer-events-none"
         style={{
-          background: 'linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, transparent 30%, transparent 70%, rgba(0,0,0,0.8) 100%)',
-          willChange: 'transform'
+          background: 'linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, transparent 30%, transparent 70%, rgba(0,0,0,0.5) 100%)',
+          willChange: 'transform',
+          zIndex: 2
         }}
       />
 
       {/* Scan lines animation */}
       <div 
-        className="absolute inset-0 pointer-events-none opacity-20"
+        className="absolute inset-0 pointer-events-none opacity-10"
         style={{
-          background: 'repeating-linear-gradient(0deg, transparent 0px, transparent 2px, rgba(0, 255, 65, 0.1) 2px, rgba(0, 255, 65, 0.1) 4px)',
+          background: 'repeating-linear-gradient(0deg, transparent 0px, transparent 2px, rgba(0, 255, 65, 0.05) 2px, rgba(0, 255, 65, 0.05) 4px)',
           animation: 'scanlines 2s linear infinite',
-          willChange: 'transform'
+          willChange: 'transform',
+          zIndex: 3
         }}
       />
 
       {/* Corner brackets like weapon sights */}
-      <div className="fixed inset-0 pointer-events-none z-20">
+      <div className="fixed inset-0 pointer-events-none" style={{ zIndex: 10 }}>
         {/* Top left */}
         <div className="absolute top-8 left-8 w-16 h-16 border-l-4 border-t-4 border-night-vision opacity-70 animate-pulse" />
         {/* Top right */}
@@ -297,11 +299,14 @@ export default function ProfessionalMilitaryHero({ className = '' }: Professiona
       <div ref={mountRef} className="absolute inset-0 pointer-events-none" style={{ zIndex: -2 }} />
 
       {/* Professional Military HUD */}
-      <MilitaryHUD mousePosition={mousePosition} />
+      <div style={{ zIndex: 15 }}>
+        <MilitaryHUD mousePosition={mousePosition} />
+      </div>
 
       {/* Hero Content with Authentic Military Typography */}
       <motion.div 
-        className="absolute inset-0 flex items-center justify-center text-center text-white z-10"
+        className="absolute inset-0 flex items-center justify-center text-center text-white"
+        style={{ zIndex: 20 }}
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1.2, delay: 0.3 }}
