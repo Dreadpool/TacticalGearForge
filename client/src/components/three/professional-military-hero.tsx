@@ -294,51 +294,7 @@ export default function ProfessionalMilitaryHero({ className = '' }: Professiona
         <MilitaryHUD mousePosition={mousePosition} />
       </div>
 
-      {/* Hero Content with Authentic Military Typography */}
-      <motion.div 
-        className="absolute inset-0 flex items-center justify-center text-center text-white"
-        style={{ zIndex: 20 }}
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1.2, delay: 0.3 }}
-      >
-        <div className="max-w-5xl px-6">
-          <motion.h1 
-            className="text-6xl md:text-8xl font-military-header mb-8 tracking-widest"
-            style={{ 
-              textShadow: '0 0 30px rgba(0, 255, 65, 0.6)',
-              color: '#00FF41',
-              filter: 'drop-shadow(0 0 10px #00FF41)'
-            }}
-          >
-            TACTICAL OPERATIONS
-          </motion.h1>
-          <motion.div 
-            className="text-xl md:text-2xl mb-10 font-mono-terminal tracking-wide"
-            style={{ color: '#00FF41' }}
-          >
-            <TypewriterText text="LOADING ARMORY SYSTEMS..." />
-          </motion.div>
-          
 
-
-          <motion.button
-            className="bg-ops-black hover:bg-night-vision text-night-vision hover:text-ops-black font-tactical font-bold py-4 px-8 text-lg tracking-wider border-2 border-night-vision transition-all duration-300"
-            style={{
-              textShadow: '0 0 10px #00FF41',
-              boxShadow: '0 0 20px rgba(0, 255, 65, 0.2)'
-            }}
-            whileHover={{ 
-              scale: 1.05, 
-              boxShadow: '0 0 30px rgba(0, 255, 65, 0.5)',
-              filter: 'drop-shadow(0 0 15px #00FF41)'
-            }}
-            whileTap={{ scale: 0.98 }}
-          >
-            ENTER ARMORY
-          </motion.button>
-        </div>
-      </motion.div>
     </div>
   );
 }
