@@ -3,7 +3,8 @@ import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import Navigation from "@/components/navigation";
 import HeroSection from "@/components/hero-section";
-import ImmersiveHero from "@/components/immersive-hero";
+import ProfessionalMilitaryHero from "@/components/three/professional-military-hero";
+import VideoBackground from "@/components/video-background";
 import LoadingScreen from "@/components/loading-screen";
 import ProductShowcase3D from "@/components/product-showcase-3d";
 import ProductCard from "@/components/product-card";
@@ -45,7 +46,78 @@ export default function Home() {
       {!showLoading && (
         <>
           <Navigation />
-          <ImmersiveHero />
+          {/* Video Background */}
+          <VideoBackground />
+          
+          {/* Three.js Hero Scene */}
+          <ProfessionalMilitaryHero />
+          
+          {/* Hero Content */}
+          <motion.div 
+            className="relative z-40 min-h-screen flex items-center justify-center text-center px-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 1 }}
+          >
+            <div className="max-w-5xl mx-auto">
+              <motion.h1 
+                className="text-5xl md:text-7xl font-military-header mb-8 tracking-wider"
+                style={{ 
+                  background: 'linear-gradient(45deg, #00FF41 0%, #C8A882 50%, #FFA500 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  textShadow: '0 0 30px rgba(0, 255, 65, 0.3)'
+                }}
+                initial={{ opacity: 0, y: -50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1, delay: 1.2 }}
+              >
+                PRECISION GEAR CO
+              </motion.h1>
+              
+              <motion.p 
+                className="text-xl md:text-2xl text-tactical-tan mb-6 font-hud tracking-wide leading-relaxed"
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1, delay: 1.5 }}
+              >
+                Only battle-tested gear from the world's best operators,<br />
+                because your family deserves it.
+              </motion.p>
+              
+              <motion.p 
+                className="text-2xl md:text-3xl text-night-vision mb-12 font-military-header tracking-wider"
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1, delay: 1.8 }}
+              >
+                GEAR LIKE THE PROS
+              </motion.p>
+              
+              <motion.div
+                className="flex flex-col sm:flex-row gap-6 justify-center"
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1, delay: 2.1 }}
+              >
+                <motion.button
+                  className="bg-night-vision text-ops-black px-8 py-4 font-military-header text-lg tracking-wider hover:bg-tactical-tan transition-colors border-2 border-night-vision hover:border-tactical-tan"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  BROWSE GEAR
+                </motion.button>
+                
+                <motion.button
+                  className="border-2 border-night-vision text-night-vision px-8 py-4 font-military-header text-lg tracking-wider hover:bg-night-vision hover:text-ops-black transition-colors"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  LEARN MORE
+                </motion.button>
+              </motion.div>
+            </div>
+          </motion.div>
 
       {/* Featured Products */}
       <section className="py-20 relative">
