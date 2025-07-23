@@ -1,23 +1,29 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useLocation } from "wouter";
 import Navigation from "@/components/navigation";
-import ProductCard from "@/components/product-card";
+import ProductCardModern from "@/components/product-card-modern";
+import SkeletonLoader from "@/components/skeleton-loader";
 import Footer from "@/components/footer";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useToast } from "@/hooks/use-toast";
 import { Search, Filter } from "lucide-react";
+import { apiRequest } from "@/lib/queryClient";
 import type { Product } from "@shared/schema";
 
 export default function Products() {
-  const [location] = useLocation();
+  const [location, navigate] = useLocation();
   const urlParams = new URLSearchParams(location.split('?')[1] || '');
   const categoryFilter = urlParams.get('category') || '';
   
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(categoryFilter);
   const [sortBy, setSortBy] = useState("name");
+  
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
 
   const { data: products, isLoading } = useQuery<Product[]>({
     queryKey: ['/api/products', selectedCategory ? `?category=${selectedCategory}` : ''],
@@ -43,6 +49,46 @@ export default function Products() {
 
   const categories = ["PROTECTION", "LOAD BEARING", "OPTICS", "TOOLS", "FOOTWEAR"];
 
+  // Add to cart mutation
+  const addToCartMutation = useMutation({
+    mutationFn: async (product: Product) => {
+      const response = await fetch('/api/cart', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          productId: product.id, 
+          quantity: 1 
+        })
+      });
+      if (!response.ok) throw new Error('Failed to add to cart');
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/cart'] });
+      toast({
+        title: "Added to Cart",
+        description: "Item successfully added to your tactical loadout",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Error",
+        description: "Failed to add item to cart",
+        variant: "destructive",
+      });
+    }
+  });
+
+  const handleAddToCart = (product: Product) => {
+    addToCartMutation.mutate(product);
+  };
+
+  const handleViewDetails = (product: Product) => {
+    navigate(`/products/${product.id}`);
+  };
+
   return (
     <div className="min-h-screen bg-ops-black text-white">
       <Navigation />
@@ -55,10 +101,19 @@ export default function Products() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <div className="text-night-vision font-mono text-sm mb-4">// TACTICAL EQUIPMENT CATALOG</div>
-            <h1 className="text-4xl font-bold mb-6">MISSION EQUIPMENT</h1>
-            <p className="text-steel-gray max-w-2xl mx-auto">
-              Browse our complete inventory of tactical gear. Every item is tested and verified for operational readiness.
+            <div className="text-night-vision font-mono-terminal text-sm mb-4 tracking-wider">// TACTICAL EQUIPMENT CATALOG</div>
+            <h1 className="text-5xl md:text-6xl font-military-header mb-6 tracking-wider"
+              style={{
+                background: 'linear-gradient(45deg, #00FF41 0%, #C8A882 50%, #FFA500 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                textShadow: '0 0 30px rgba(0, 255, 65, 0.3)'
+              }}
+            >
+              MISSION EQUIPMENT
+            </h1>
+            <p className="text-tactical-tan max-w-2xl mx-auto font-hud text-lg leading-relaxed">
+              Browse our complete inventory of tactical gear. Every item is tested and verified for operational readiness by elite operators worldwide.
             </p>
           </motion.div>
 
@@ -107,18 +162,7 @@ export default function Products() {
           {/* Products Grid */}
           {isLoading ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-              {[...Array(8)].map((_, i) => (
-                <div key={i} className="hud-border bg-steel-gray bg-opacity-20 p-6 animate-pulse">
-                  <div className="w-full h-48 bg-steel-gray bg-opacity-40 mb-4"></div>
-                  <div className="h-4 bg-steel-gray bg-opacity-40 mb-2"></div>
-                  <div className="h-6 bg-steel-gray bg-opacity-40 mb-2"></div>
-                  <div className="h-16 bg-steel-gray bg-opacity-40 mb-4"></div>
-                  <div className="flex justify-between items-center">
-                    <div className="h-8 w-20 bg-steel-gray bg-opacity-40"></div>
-                    <div className="h-10 w-32 bg-steel-gray bg-opacity-40"></div>
-                  </div>
-                </div>
-              ))}
+              <SkeletonLoader count={8} />
             </div>
           ) : sortedProducts.length === 0 ? (
             <motion.div 
@@ -127,9 +171,14 @@ export default function Products() {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.6 }}
             >
-              <div className="hud-border p-12 bg-steel-gray bg-opacity-20 max-w-md mx-auto">
-                <div className="text-night-vision font-mono text-2xl mb-4">NO EQUIPMENT FOUND</div>
-                <p className="text-steel-gray">
+              <div className="bg-black/20 backdrop-blur-md border border-ranger-green/30 p-12 max-w-md mx-auto rounded-lg"
+                style={{
+                  background: 'linear-gradient(145deg, rgba(0, 0, 0, 0.3), rgba(66, 84, 57, 0.1))',
+                  backdropFilter: 'blur(20px)'
+                }}
+              >
+                <div className="text-night-vision font-military-header text-2xl mb-4 tracking-wide">NO EQUIPMENT FOUND</div>
+                <p className="text-tactical-tan font-hud">
                   Adjust your search parameters or browse all categories.
                 </p>
               </div>
@@ -137,14 +186,13 @@ export default function Products() {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
               {sortedProducts.map((product, index) => (
-                <motion.div
+                <ProductCardModern
                   key={product.id}
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.05 }}
-                >
-                  <ProductCard product={product} />
-                </motion.div>
+                  product={product}
+                  index={index}
+                  onAddToCart={handleAddToCart}
+                  onViewDetails={handleViewDetails}
+                />
               ))}
             </div>
           )}
