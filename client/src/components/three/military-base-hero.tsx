@@ -95,7 +95,7 @@ export default function MilitaryBaseHero({ className = '' }: MilitaryBaseHeroPro
     mountRef.current.appendChild(renderer.domElement);
 
     // Harsh military sunlight
-    const directionalLight = new THREE.DirectionalLight(0xFFFFDD, 1.0);
+    const directionalLight = new THREE.DirectionalLight(0xFFFFDD, 1.2);
     directionalLight.position.set(10, 10, 5);
     directionalLight.castShadow = true;
     directionalLight.shadow.mapSize.width = 2048;
@@ -108,24 +108,71 @@ export default function MilitaryBaseHero({ className = '' }: MilitaryBaseHeroPro
     directionalLight.shadow.camera.bottom = -20;
     scene.add(directionalLight);
 
-    // Ambient light
-    const ambientLight = new THREE.AmbientLight(0x404040, 0.4);
+    // Brighter ambient light for better visibility
+    const ambientLight = new THREE.AmbientLight(0x606060, 0.6);
     scene.add(ambientLight);
 
     // Subtle green accent light
-    const accentLight = new THREE.PointLight(0x00FF41, 0.3, 8);
-    accentLight.position.set(-3, 2, 2);
+    const accentLight = new THREE.PointLight(0x00FF41, 0.5, 15);
+    accentLight.position.set(-4, 4, 4);
     scene.add(accentLight);
+    
+    // Add strong rim lighting for the tactical vest
+    const rimLight = new THREE.PointLight(0xFFFFFF, 1.2, 10);
+    rimLight.position.set(6, 5, 3);
+    scene.add(rimLight);
+    
+    // Secondary fill light
+    const fillLight = new THREE.PointLight(0xFFFFFD, 0.8, 12);
+    fillLight.position.set(-5, 3, 6);
+    scene.add(fillLight);
 
     // Create realistic tactical vest
     const vestGroup = new THREE.Group();
 
-    // Main vest body with realistic military color
+    // Create procedural camouflage texture
+    const createCamoTexture = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = canvas.height = 512;
+      const ctx = canvas.getContext('2d')!;
+      
+      // Base olive drab
+      ctx.fillStyle = '#3C3530';
+      ctx.fillRect(0, 0, 512, 512);
+      
+      // Add camo pattern with better contrast
+      const colors = ['#2D2A22', '#4A4935', '#5A5D23', '#6B7539'];
+      for (let i = 0; i < 40; i++) {
+        ctx.fillStyle = colors[Math.floor(Math.random() * colors.length)];
+        ctx.beginPath();
+        ctx.ellipse(
+          Math.random() * 512,
+          Math.random() * 512,
+          Math.random() * 50 + 25,
+          Math.random() * 35 + 20,
+          Math.random() * Math.PI * 2,
+          0,
+          Math.PI * 2
+        );
+        ctx.fill();
+      }
+      
+      const texture = new THREE.CanvasTexture(canvas);
+      texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+      texture.repeat.set(1, 1);
+      return texture;
+    };
+
+    // Main vest body with realistic military color and camouflage
     const vestGeometry = new THREE.BoxGeometry(2.0, 2.8, 0.3);
+    const camoTexture = createCamoTexture();
     const vestMaterial = new THREE.MeshStandardMaterial({
-      color: 0x3C3530, // Dark olive drab
-      roughness: 0.95,
-      metalness: 0.05
+      map: camoTexture,
+      color: 0x6B7539, // Much brighter military green for visibility
+      roughness: 0.7,
+      metalness: 0.15,
+      emissive: 0x113311,
+      emissiveIntensity: 0.15
     });
     const vestMesh = new THREE.Mesh(vestGeometry, vestMaterial);
     vestMesh.castShadow = true;
@@ -208,6 +255,33 @@ export default function MilitaryBaseHero({ className = '' }: MilitaryBaseHeroPro
     buckle.position.set(0, -1.2, 0.08);
     buckle.castShadow = true;
     vestGroup.add(buckle);
+
+    // Add a military tactical helmet above the vest
+    const helmetGeometry = new THREE.SphereGeometry(0.8, 16, 12, 0, Math.PI * 2, 0, Math.PI * 0.7);
+    const helmetMaterial = new THREE.MeshStandardMaterial({
+      color: 0x3C3530, // Dark olive to match vest
+      roughness: 0.6,
+      metalness: 0.2,
+      emissive: 0x001100,
+      emissiveIntensity: 0.1
+    });
+    const helmet = new THREE.Mesh(helmetGeometry, helmetMaterial);
+    helmet.position.set(0, 2.5, 0);
+    helmet.castShadow = true;
+    helmet.receiveShadow = true;
+    vestGroup.add(helmet);
+
+    // Helmet accessories (NVG mount)
+    const nvgMountGeometry = new THREE.BoxGeometry(0.4, 0.1, 0.1);
+    const nvgMountMaterial = new THREE.MeshStandardMaterial({
+      color: 0x222222,
+      roughness: 0.3,
+      metalness: 0.8
+    });
+    const nvgMount = new THREE.Mesh(nvgMountGeometry, nvgMountMaterial);
+    nvgMount.position.set(0, 2.6, 0.6);
+    nvgMount.castShadow = true;
+    vestGroup.add(nvgMount);
 
     vestGroup.position.set(0, 1.5, 0);
     scene.add(vestGroup);
@@ -357,7 +431,8 @@ export default function MilitaryBaseHero({ className = '' }: MilitaryBaseHeroPro
         loop
         playsInline
       >
-        <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4" />
+        <source src="/attached_assets/videos/military-training.mp4" type="video/mp4" />
+        <source src="/attached_assets/videos/military-fallback.mp4" type="video/mp4" />
       </video>
 
       {/* Dark military vignette */}
