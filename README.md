@@ -21,7 +21,7 @@ A military-themed e-commerce platform for tactical equipment, built with modern 
 
 ## Quick Start with GitHub Codespaces
 
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/YOUR_USERNAME/TacticalGearForge)
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/Dreadpool/TacticalGearForge)
 
 1. Click the button above or press `.` in this repository
 2. Wait for the environment to set up (takes ~2 minutes)
