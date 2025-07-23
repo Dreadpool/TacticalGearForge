@@ -1,6 +1,48 @@
-node_modules
-dist
+# Dependencies
+node_modules/
+.npm
+
+# Production build
+dist/
+build/
+
+# Environment files
+.env
+.env.local
+.env.production
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# OS files
 .DS_Store
-server/public
-vite.config.ts.*
-*.tar.gz
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Test files
+test-*.mjs
+test-*.js
+test-*.cjs
+*.test.js
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Replit specific
+.config/
+.upm/
+.ccls-cache/
+
+# Database
+*.sqlite
+*.db
+EOF < /dev/null
