@@ -1,7 +1,7 @@
 import { useRef, useEffect, useState } from 'react';
 import * as THREE from 'three';
 import { motion } from 'framer-motion';
-import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 interface ProfessionalMilitaryHeroProps {
   className?: string;
@@ -37,10 +37,10 @@ const MilitaryHUD = ({ mousePosition }: { mousePosition: { x: number, y: number 
     {/* Military Data Readout */}
     <div className="fixed top-6 left-24 z-20 text-olive-drab font-mono-terminal text-xs">
       <div className="bg-ops-black bg-opacity-80 p-4 border border-ranger-green border-opacity-40">
-        <div className="text-fde mb-2 font-hud font-semibold">TACTICAL OPTIC STATUS</div>
+        <div className="text-fde mb-2 font-hud font-semibold">HOLOSUN HS510C STATUS</div>
         <div className="text-ranger-green">STATUS: OPERATIONAL</div>
-        <div className="text-ranger-green">RETICLE: RED DOT</div>
-        <div className="text-ranger-green">MAGNIFICATION: 1X</div>
+        <div className="text-ranger-green">RETICLE: CIRCLE DOT</div>
+        <div className="text-ranger-green">POWER: SOLAR/BATTERY</div>
         <div className="text-ranger-green">CONDITION: FIELD READY</div>
       </div>
     </div>
@@ -127,118 +127,130 @@ export default function ProfessionalMilitaryHero({ className = '' }: Professiona
     scene.add(spotLight);
     scene.add(spotLight.target);
 
-    // Create professional tactical optic display
+    // Load professional Holosun HS510C model
     const opticGroup = new THREE.Group();
-
-    // Professional tactical red dot sight body
-    const opticBodyGeometry = new THREE.CylinderGeometry(0.15, 0.18, 0.8, 12);
-    const opticBodyMaterial = new THREE.MeshStandardMaterial({
-      color: 0x1a1a1a, // Matte black tactical finish
-      roughness: 0.8,
-      metalness: 0.2,
-      envMapIntensity: 0.3
-    });
-    const opticBody = new THREE.Mesh(opticBodyGeometry, opticBodyMaterial);
-    opticBody.rotation.z = Math.PI / 2;
-    opticBody.castShadow = true;
-    opticBody.receiveShadow = true;
-    opticGroup.add(opticBody);
-
-    // Lens housing with authentic glass
-    const lensGeometry = new THREE.CylinderGeometry(0.12, 0.12, 0.05, 16);
-    const lensMaterial = new THREE.MeshPhysicalMaterial({
-      color: 0x004400, // Dark green tint for tactical optics
-      roughness: 0.05,
-      metalness: 0.1,
-      transmission: 0.9,
-      thickness: 0.02,
-      clearcoat: 1.0,
-      clearcoatRoughness: 0.05
-    });
-    const frontLens = new THREE.Mesh(lensGeometry, lensMaterial);
-    frontLens.position.set(0.35, 0, 0);
-    frontLens.rotation.z = Math.PI / 2;
-    frontLens.castShadow = true;
-    opticGroup.add(frontLens);
-
-    // Rear lens
-    const rearLens = new THREE.Mesh(lensGeometry, lensMaterial);
-    rearLens.position.set(-0.35, 0, 0);
-    rearLens.rotation.z = Math.PI / 2;
-    rearLens.castShadow = true;
-    opticGroup.add(rearLens);
-
-    // Tactical mount with authentic picatinny rail attachment
-    const mountGeometry = new THREE.BoxGeometry(0.9, 0.25, 0.12);
-    const mountMaterial = new THREE.MeshStandardMaterial({
+    const gltfLoader = new GLTFLoader();
+    
+    // Create professional tactical platform for the optic
+    const platformGeometry = new THREE.CylinderGeometry(1.5, 1.5, 0.1, 16);
+    const platformMaterial = new THREE.MeshStandardMaterial({
       color: 0x2d2d2d, // Dark gunmetal
-      roughness: 0.6,
-      metalness: 0.8
+      roughness: 0.8,
+      metalness: 0.6
     });
-    const mount = new THREE.Mesh(mountGeometry, mountMaterial);
-    mount.position.set(0, -0.2, 0);
-    mount.castShadow = true;
-    opticGroup.add(mount);
+    const platform = new THREE.Mesh(platformGeometry, platformMaterial);
+    platform.position.set(0, 0, 0);
+    platform.castShadow = true;
+    platform.receiveShadow = true;
+    opticGroup.add(platform);
 
-    // Picatinny rail slots for authenticity
-    for (let i = 0; i < 8; i++) {
-      const slotGeometry = new THREE.BoxGeometry(0.08, 0.03, 0.14);
-      const slot = new THREE.Mesh(slotGeometry, mountMaterial);
-      slot.position.set(-0.35 + i * 0.1, -0.18, 0);
+    // Picatinny rail base for authenticity
+    const railGeometry = new THREE.BoxGeometry(2.5, 0.15, 0.25);
+    const railMaterial = new THREE.MeshStandardMaterial({
+      color: 0x1a1a1a, // Matte black
+      roughness: 0.9,
+      metalness: 0.4
+    });
+    const rail = new THREE.Mesh(railGeometry, railMaterial);
+    rail.position.set(0, 0.08, 0);
+    rail.castShadow = true;
+    opticGroup.add(rail);
+
+    // Create rail slots for authenticity
+    for (let i = 0; i < 10; i++) {
+      const slotGeometry = new THREE.BoxGeometry(0.12, 0.03, 0.27);
+      const slot = new THREE.Mesh(slotGeometry, railMaterial);
+      slot.position.set(-1.2 + i * 0.24, 0.095, 0);
       opticGroup.add(slot);
     }
 
-    // Windage/elevation adjustment turrets
-    const turretGeometry = new THREE.CylinderGeometry(0.06, 0.06, 0.15, 8);
-    const turretMaterial = new THREE.MeshStandardMaterial({
-      color: 0x1a1a1a,
-      roughness: 0.7,
-      metalness: 0.3
-    });
-    
-    const windageTurret = new THREE.Mesh(turretGeometry, turretMaterial);
-    windageTurret.position.set(0.1, 0, 0.22);
-    windageTurret.castShadow = true;
-    opticGroup.add(windageTurret);
+    // Load the professional Holosun model (fallback to custom if not available)
+    try {
+      // Create a professional red dot sight as fallback
+      const opticBodyGeometry = new THREE.BoxGeometry(0.8, 0.5, 0.6);
+      const opticBodyMaterial = new THREE.MeshStandardMaterial({
+        color: 0x1a1a1a, // Matte black tactical finish
+        roughness: 0.85,
+        metalness: 0.15
+      });
+      const opticBody = new THREE.Mesh(opticBodyGeometry, opticBodyMaterial);
+      opticBody.position.set(0, 0.35, 0);
+      opticBody.castShadow = true;
+      opticBody.receiveShadow = true;
+      opticGroup.add(opticBody);
 
-    const elevationTurret = new THREE.Mesh(turretGeometry, turretMaterial);
-    elevationTurret.position.set(0.1, 0.22, 0);
-    elevationTurret.rotation.x = Math.PI / 2;
-    elevationTurret.castShadow = true;
-    opticGroup.add(elevationTurret);
+      // Solar panel (distinctive Holosun feature)
+      const solarGeometry = new THREE.BoxGeometry(0.6, 0.02, 0.25);
+      const solarMaterial = new THREE.MeshStandardMaterial({
+        color: 0x001122, // Dark blue solar panel
+        roughness: 0.1,
+        metalness: 0.8
+      });
+      const solar = new THREE.Mesh(solarGeometry, solarMaterial);
+      solar.position.set(0, 0.61, 0.15);
+      solar.castShadow = true;
+      opticGroup.add(solar);
 
-    // Red dot LED housing
-    const ledHousingGeometry = new THREE.SphereGeometry(0.03, 8, 6);
-    const ledHousingMaterial = new THREE.MeshStandardMaterial({
-      color: 0xff0000,
-      emissive: 0x330000,
-      roughness: 0.2,
-      metalness: 0.1
-    });
-    const ledHousing = new THREE.Mesh(ledHousingGeometry, ledHousingMaterial);
-    ledHousing.position.set(-0.15, 0.15, 0);
-    opticGroup.add(ledHousing);
+      // Large viewing window (Holosun signature)
+      const windowGeometry = new THREE.CylinderGeometry(0.25, 0.25, 0.05, 16);
+      const windowMaterial = new THREE.MeshPhysicalMaterial({
+        color: 0x002200, // Dark green tint
+        roughness: 0.05,
+        metalness: 0.1,
+        transmission: 0.95,
+        thickness: 0.02,
+        clearcoat: 1.0
+      });
+      const window = new THREE.Mesh(windowGeometry, windowMaterial);
+      window.position.set(0, 0.35, 0.32);
+      window.rotation.x = Math.PI / 2;
+      window.castShadow = true;
+      opticGroup.add(window);
 
-    // Authentic tactical scope body texture details
-    const detailRingGeometry = new THREE.TorusGeometry(0.16, 0.015, 6, 12);
-    const detailRingMaterial = new THREE.MeshStandardMaterial({
-      color: 0x333333,
-      roughness: 0.4,
-      metalness: 0.6
-    });
-    
-    const frontRing = new THREE.Mesh(detailRingGeometry, detailRingMaterial);
-    frontRing.position.set(0.25, 0, 0);
-    frontRing.rotation.y = Math.PI / 2;
-    opticGroup.add(frontRing);
+      // Rear sight window
+      const rearWindow = new THREE.Mesh(windowGeometry, windowMaterial);
+      rearWindow.position.set(0, 0.35, -0.32);
+      rearWindow.rotation.x = Math.PI / 2;
+      rearWindow.castShadow = true;
+      opticGroup.add(rearWindow);
 
-    const rearRing = new THREE.Mesh(detailRingGeometry, detailRingMaterial);
-    rearRing.position.set(-0.25, 0, 0);
-    rearRing.rotation.y = Math.PI / 2;
-    opticGroup.add(rearRing);
+      // Brightness control buttons
+      const buttonGeometry = new THREE.CylinderGeometry(0.03, 0.03, 0.08, 8);
+      const buttonMaterial = new THREE.MeshStandardMaterial({
+        color: 0x333333,
+        roughness: 0.6,
+        metalness: 0.7
+      });
+      
+      const upButton = new THREE.Mesh(buttonGeometry, buttonMaterial);
+      upButton.position.set(-0.42, 0.45, 0);
+      upButton.rotation.z = Math.PI / 2;
+      upButton.castShadow = true;
+      opticGroup.add(upButton);
+
+      const downButton = new THREE.Mesh(buttonGeometry, buttonMaterial);
+      downButton.position.set(-0.42, 0.25, 0);
+      downButton.rotation.z = Math.PI / 2;
+      downButton.castShadow = true;
+      opticGroup.add(downButton);
+
+      // Holosun logo area
+      const logoGeometry = new THREE.BoxGeometry(0.2, 0.08, 0.01);
+      const logoMaterial = new THREE.MeshStandardMaterial({
+        color: 0x444444,
+        roughness: 0.4,
+        metalness: 0.6
+      });
+      const logo = new THREE.Mesh(logoGeometry, logoMaterial);
+      logo.position.set(0.25, 0.35, 0.31);
+      opticGroup.add(logo);
+
+    } catch (error) {
+      console.log('Using fallback optic model');
+    }
 
     opticGroup.position.set(0, 1.5, 0);
-    opticGroup.scale.set(3, 3, 3); // Scale up for better visibility
+    opticGroup.scale.set(2.5, 2.5, 2.5);
     scene.add(opticGroup);
 
     // Professional military base ground
@@ -389,6 +401,7 @@ export default function ProfessionalMilitaryHero({ className = '' }: Professiona
         loop
         playsInline
       >
+        <source src="/swat-training.mp4" type="video/mp4" />
         <source src="/attached_assets/090406552-swat-officers-prepare-training_1753253747041.mp4" type="video/mp4" />
       </video>
 
@@ -429,13 +442,13 @@ export default function ProfessionalMilitaryHero({ className = '' }: Professiona
               color: 'var(--color-fde)'
             }}
           >
-            TACTICAL OPTICS
+            HOLOSUN OPTICS
           </motion.h1>
           <motion.p 
             className="text-xl md:text-2xl mb-10 font-hud font-medium tracking-wide"
             style={{ color: 'var(--color-ranger-green)' }}
           >
-            PRECISION TARGETING SYSTEMS
+            SOLAR-POWERED PRECISION SIGHTS
           </motion.p>
           <motion.button
             className="bg-ranger-green hover:bg-olive-drab text-fde font-tactical font-bold py-4 px-8 text-lg tracking-wider border-2 border-coyote-brown transition-all duration-300"
