@@ -146,11 +146,15 @@ export default function ProductDetailModern() {
     return testimonials[productName] || null;
   };
 
-  const documents = [
-    { name: "Field Test Report", type: "PDF", size: "2.3 MB" },
-    { name: "Technical Specifications", type: "PDF", size: "1.8 MB" },
-    { name: "Certification Document", type: "PDF", size: "956 KB" }
-  ];
+  // Real product documentation - only show if actual docs exist
+  const getProductDocuments = (productName: string) => {
+    const documents: Record<string, any[]> = {
+      // No confirmed downloadable documentation found for current products
+      // Only add documents here if we have actual PDFs/manuals available
+    };
+    
+    return documents[productName] || [];
+  };
 
   const tabsData = [
     {
@@ -363,34 +367,40 @@ export default function ProductDetailModern() {
                     );
                   })()}
 
-                  {/* Document Links */}
-                  <div className="space-y-2">
-                    <h4 className="font-military-header text-night-vision text-sm tracking-wider mb-3">
-                      DOCUMENTATION
-                    </h4>
-                    {documents.map((doc, index) => (
-                      <motion.div
-                        key={doc.name}
-                        className="group flex items-center justify-between p-3 bg-black/20 backdrop-blur-sm rounded border border-ranger-green/20 hover:border-night-vision/50 transition-colors cursor-pointer"
-                        whileHover={{ x: 5 }}
-                        transition={{ duration: 0.2 }}
-                      >
-                        <div className="flex items-center gap-3">
-                          <FileText size={16} className="text-night-vision" />
-                          <div>
-                            <div className="text-white font-hud text-sm">{doc.name}</div>
-                            <div className="text-tactical-tan font-mono-terminal text-xs">
-                              {doc.type} • {doc.size}
+                  {/* Real Product Documentation - Only show if documents exist */}
+                  {(() => {
+                    const documents = getProductDocuments(product.name);
+                    return documents.length > 0 ? (
+                      <div className="space-y-2">
+                        <h4 className="font-military-header text-night-vision text-sm tracking-wider mb-3">
+                          DOCUMENTATION
+                        </h4>
+                        {documents.map((doc, index) => (
+                          <motion.div
+                            key={doc.name}
+                            className="group flex items-center justify-between p-3 bg-black/20 backdrop-blur-sm rounded border border-ranger-green/20 hover:border-night-vision/50 transition-colors cursor-pointer"
+                            whileHover={{ x: 5 }}
+                            transition={{ duration: 0.2 }}
+                            onClick={() => window.open(doc.url, '_blank')}
+                          >
+                            <div className="flex items-center gap-3">
+                              <FileText size={16} className="text-night-vision" />
+                              <div>
+                                <div className="text-white font-hud text-sm">{doc.name}</div>
+                                <div className="text-tactical-tan font-mono-terminal text-xs">
+                                  {doc.type} • {doc.size}
+                                </div>
+                              </div>
                             </div>
-                          </div>
-                        </div>
-                        <ExternalLink 
-                          size={14} 
-                          className="text-tactical-tan group-hover:text-night-vision transition-colors" 
-                        />
-                      </motion.div>
-                    ))}
-                  </div>
+                            <ExternalLink 
+                              size={14} 
+                              className="text-tactical-tan group-hover:text-night-vision transition-colors" 
+                            />
+                          </motion.div>
+                        ))}
+                      </div>
+                    ) : null;
+                  })()}
                 </div>
 
                 {/* Quantity and Add to Cart */}
