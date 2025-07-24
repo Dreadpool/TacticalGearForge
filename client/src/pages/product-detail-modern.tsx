@@ -149,8 +149,16 @@ export default function ProductDetailModern() {
   // Real product documentation - only show if actual docs exist
   const getProductDocuments = (productName: string) => {
     const documents: Record<string, any[]> = {
-      // No confirmed downloadable documentation found for current products
-      // Only add documents here if we have actual PDFs/manuals available
+      "AIMPOINT MICRO T-2 RED DOT SIGHT": [
+        {
+          name: "Micro T-2 User Manual",
+          type: "PDF",
+          size: "Available on Scribd",
+          url: "https://www.scribd.com/document/700876445/Micro-T2-Manual"
+        }
+      ]
+      // Only verified, downloadable documentation is included
+      // Other products have manuals included with purchase only
     };
     
     return documents[productName] || [];
