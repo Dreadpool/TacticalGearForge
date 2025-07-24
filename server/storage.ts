@@ -173,12 +173,12 @@ export class MemStorage implements IStorage {
         description: "Designed by GBRS Group, a Veteran-Owned, Tier 1 Training organization composed exclusively of Special Mission Unit Veterans. The V3 utilizes a 2-layer outer belt to create a lightweight, flexible yet rigid platform. Trusted by tier-one operators for high-stakes missions and real-world operational durability.",
         price: "189.00",
         category: "LOAD_BEARING",
-        imageUrl: "/api/assets/GBRS-Belt-main.jpg",
+        imageUrl: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&h=600&fit=crop&crop=center",
         additionalImages: JSON.stringify([
-          "/api/assets/GBRS-Belt-main.jpg",
-          "/api/assets/GBRS-Belt-view-2.jpg",
-          "/api/assets/GBRS-Belt-view-3.jpg",
-          "/api/assets/GBRS-Belt-buckle.jpg"
+          "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&h=600&fit=crop&crop=center",
+          "https://images.unsplash.com/photo-1585847490215-68b7e24c8c7a?w=800&h=600&fit=crop&crop=center",
+          "https://images.unsplash.com/photo-1609205937251-b5b14b7e3faa?w=800&h=600&fit=crop&crop=center",
+          "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&h=600&fit=crop&crop=center"
         ]),
         inStock: true,
         specifications: JSON.stringify({
@@ -202,12 +202,12 @@ export class MemStorage implements IStorage {
         description: "Esstac KYWI pouches have been personally used by operators in Kenya, Georgia, The UK and Afghanistan. British Army sharpshooter: 'hands down they've been the best pouches for the job!' Combines traditional nylon durability with modern Kydex retention. Legendary in military and special operations communities.",
         price: "32.00",
         category: "LOAD_BEARING",
-        imageUrl: "/api/assets/Esstac-5.56-main.jpg",
+        imageUrl: "https://images.unsplash.com/photo-1585847490215-68b7e24c8c7a?w=800&h=600&fit=crop&crop=center",
         additionalImages: JSON.stringify([
-          "/api/assets/Esstac-5.56-main.jpg",
-          "/api/assets/Esstac-5.56-side.jpg",
-          "/api/assets/Esstac-5.56-mounted.jpg",
-          "/api/assets/Esstac-5.56-detail.jpg"
+          "https://images.unsplash.com/photo-1585847490215-68b7e24c8c7a?w=800&h=600&fit=crop&crop=center",
+          "https://images.unsplash.com/photo-1609205937251-b5b14b7e3faa?w=800&h=600&fit=crop&crop=center",
+          "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&h=600&fit=crop&crop=center",
+          "https://images.unsplash.com/photo-1585847490215-68b7e24c8c7a?w=800&h=600&fit=crop&crop=center"
         ]),
         inStock: true,
         specifications: JSON.stringify({
@@ -231,12 +231,12 @@ export class MemStorage implements IStorage {
         description: "Designed by a law enforcement professional with SWAT experience, certified in explosive breaching and advanced firearms. The BMTH V2 was re-designed for the modern professional, utilizing wasted space on your combat belt for ambidextrous tourniquet access without additional steps in high-stress situations.",
         price: "45.00",
         category: "TOOLS",
-        imageUrl: "/api/assets/Soileater-TQ-main.jpg",
+        imageUrl: "https://images.unsplash.com/photo-1609205937251-b5b14b7e3faa?w=800&h=600&fit=crop&crop=center",
         additionalImages: JSON.stringify([
-          "/api/assets/Soileater-TQ-main.jpg",
-          "/api/assets/Soileater-TQ-mounted.jpg",
-          "/api/assets/Soileater-TQ-detail.jpg",
-          "/api/assets/Soileater-TQ-access.jpg"
+          "https://images.unsplash.com/photo-1609205937251-b5b14b7e3faa?w=800&h=600&fit=crop&crop=center",
+          "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&h=600&fit=crop&crop=center",
+          "https://images.unsplash.com/photo-1585847490215-68b7e24c8c7a?w=800&h=600&fit=crop&crop=center",
+          "https://images.unsplash.com/photo-1609205937251-b5b14b7e3faa?w=800&h=600&fit=crop&crop=center"
         ]),
         inStock: true,
         specifications: JSON.stringify({
