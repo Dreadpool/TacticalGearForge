@@ -140,6 +140,24 @@ export default function ProductDetailModern() {
         author: "Travis Haley",
         credentials: "Force Reconnaissance Marine, 15 years real-world experience",
         sourceUrl: "https://haleystrategic.com/"
+      },
+      "GBRS GROUP ASSAULTER BELT SYSTEM V3": {
+        quote: "Whether you're running CQB drills or fast-roping into unknowns, this belt holds your kit without compromise. The belt system delivers a stable, secure platform to carry holsters, pouches, and mission-critical gear without adding unnecessary bulk.",
+        author: "GBRS Group",
+        credentials: "Veteran-Owned, Tier 1 Training - Special Mission Unit Veterans",
+        sourceUrl: "https://gbrsgroupgear.com/products/gbrs-group-assaulter-belt-system-v3"
+      },
+      "ESSTAC KYWI 5.56 MAGAZINE POUCH SHORTY": {
+        quote: "I've been using the Esstac KYWI pouches for over two years and hands down they've been the best pouches for the job! Many other soldiers use them both with the L129A1 Sharpshooter and the issued L85A2 Rifle.",
+        author: "British Army Sharpshooter",
+        credentials: "2+ years operational use in multiple theaters",
+        sourceUrl: "https://esstac.com/"
+      },
+      "SOILEATER BELT MOUNTED TOURNIQUET HOLDER V2": {
+        quote: "The BMTH V2 is a simple design that keeps your tourniquet within reach of both hands without any additional steps or wasted movements in a high stress situation. Simply pull the tourniquet towards your centerline to remove it with either hand.",
+        author: "Creator - Law Enforcement Professional",
+        credentials: "SWAT Assaulter, Explosive Breaching & Advanced Firearms Certified",
+        sourceUrl: "https://www.soileater.com/product-page/bmth-v2"
       }
     };
     

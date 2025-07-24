@@ -164,6 +164,93 @@ export class MemStorage implements IStorage {
           mounting: "MIL-STD-1913 Picatinny rail mount",
           sourceUrl: "https://americanshootingjournal.com/training-with-ex-delta-force-legend-pat-mcnamara/"
         })
+      },
+      
+      // BELT SYSTEMS - GBRS GROUP OFFICIAL (TIER 1 OPERATORS)
+      {
+        name: "GBRS GROUP ASSAULTER BELT SYSTEM V3",
+        model: "ABS-V3-MC",
+        description: "Designed by GBRS Group, a Veteran-Owned, Tier 1 Training organization composed exclusively of Special Mission Unit Veterans. The V3 utilizes a 2-layer outer belt to create a lightweight, flexible yet rigid platform. Trusted by tier-one operators for high-stakes missions and real-world operational durability.",
+        price: "189.00",
+        category: "LOAD_BEARING",
+        imageUrl: "/api/assets/GBRS-Belt-main.jpg",
+        additionalImages: JSON.stringify([
+          "/api/assets/GBRS-Belt-main.jpg",
+          "/api/assets/GBRS-Belt-view-2.jpg",
+          "/api/assets/GBRS-Belt-view-3.jpg",
+          "/api/assets/GBRS-Belt-buckle.jpg"
+        ]),
+        inStock: true,
+        specifications: JSON.stringify({
+          creators: "GBRS Group - Special Mission Unit Veterans",
+          construction: "Type 13, 1-23/32″ webbing rated at 7,000 lbs tensile strength",
+          material: "Laser-cut PALS-compatible thermo-polymer laminate",
+          buckle: "1.75″ AustriAlpin Cobra® with integrated D-ring",
+          innerBelt: "1.5″ scuba webbing for IWB holster support",
+          weight: "Medium: 13.8 oz, Small: 12.9 oz",
+          molle: "Medium: 20 MOLLE spaces, Small: 17 MOLLE spaces",
+          endorsement: "GBRS Group Official Product - Tier 1 Operators",
+          usage: "High-stakes missions, CQB drills, fast-roping operations",
+          sourceUrl: "https://gbrsgroupgear.com/products/gbrs-group-assaulter-belt-system-v3"
+        })
+      },
+      
+      // MAGAZINE POUCHES - ESSTAC KYWI (SPECIAL FORCES PROVEN)
+      {
+        name: "ESSTAC KYWI 5.56 MAGAZINE POUCH SHORTY",
+        model: "5KY56-S-MC",
+        description: "Esstac KYWI pouches have been personally used by operators in Kenya, Georgia, The UK and Afghanistan. British Army sharpshooter: 'hands down they've been the best pouches for the job!' Combines traditional nylon durability with modern Kydex retention. Legendary in military and special operations communities.",
+        price: "32.00",
+        category: "LOAD_BEARING",
+        imageUrl: "/api/assets/Esstac-5.56-main.jpg",
+        additionalImages: JSON.stringify([
+          "/api/assets/Esstac-5.56-main.jpg",
+          "/api/assets/Esstac-5.56-side.jpg",
+          "/api/assets/Esstac-5.56-mounted.jpg",
+          "/api/assets/Esstac-5.56-detail.jpg"
+        ]),
+        inStock: true,
+        specifications: JSON.stringify({
+          endorser: "British Army Sharpshooter, Multiple Special Forces Units",
+          quote: "hands down they've been the best pouches for the job!",
+          users: "Operators in Kenya, Georgia, The UK and Afghanistan",
+          construction: "500D nylon exterior with Kydex insert (KYWI design)",
+          retention: "Solid retention with satisfying 'click' to hold magazines",
+          compatibility: "Standard 5.56/.223 magazines",
+          mounting: "MOLLE/PALS compatible",
+          noise: "Soft nylon exterior to keep noise down",
+          durability: "Proven in combat environments over 2+ years",
+          sourceUrl: "https://esstac.com/5-56/"
+        })
+      },
+      
+      // MEDICAL GEAR - SOILEATER TOURNIQUET HOLDER (LAW ENFORCEMENT/SWAT)
+      {
+        name: "SOILEATER BELT MOUNTED TOURNIQUET HOLDER V2",
+        model: "BMTH-V2-MC",
+        description: "Designed by a law enforcement professional with SWAT experience, certified in explosive breaching and advanced firearms. The BMTH V2 was re-designed for the modern professional, utilizing wasted space on your combat belt for ambidextrous tourniquet access without additional steps in high-stress situations.",
+        price: "45.00",
+        category: "TOOLS",
+        imageUrl: "/api/assets/Soileater-TQ-main.jpg",
+        additionalImages: JSON.stringify([
+          "/api/assets/Soileater-TQ-main.jpg",
+          "/api/assets/Soileater-TQ-mounted.jpg",
+          "/api/assets/Soileater-TQ-detail.jpg",
+          "/api/assets/Soileater-TQ-access.jpg"
+        ]),
+        inStock: true,
+        specifications: JSON.stringify({
+          creator: "Law Enforcement Professional - SWAT Assaulter",
+          design: "Ambidextrous access without snaps/velcro/buttons",
+          compatibility: "CAT or SOFTT-W tourniquets",
+          access: "Simply pull tourniquet towards centerline with either hand",
+          mounting: "Loop under belt with hook/MOLLE outer belt",
+          additional: "Includes marker, decompression needle or chemlight holder",
+          belts: "Does not work with GBRS or Eagle Industries Belts (need reversed version)",
+          enhancement: "Adds more velcro real-estate for improved belt stability",
+          certifications: "Creator certified in explosive breaching and advanced firearms",
+          sourceUrl: "https://www.soileater.com/product-page/bmth-v2"
+        })
       }
     ];
 
