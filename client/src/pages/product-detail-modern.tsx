@@ -10,7 +10,7 @@ import VerifiedProfessionalBadge from "@/components/verified-professional-badge"
 import TestimonialCard from "@/components/testimonial-card";
 import StickyAddToCart from "@/components/sticky-add-to-cart";
 import { useToast } from "@/hooks/use-toast";
-import { ArrowLeft, Plus, Minus, Star, FileText, ExternalLink, Zap } from "lucide-react";
+import { ArrowLeft, Plus, Minus, Star, FileText, ExternalLink, Zap, Shield } from "lucide-react";
 import type { Product } from "@shared/schema";
 
 export default function ProductDetailModern() {
