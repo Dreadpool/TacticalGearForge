@@ -1,12 +1,13 @@
 import { motion } from 'framer-motion';
-import { Quote, Star } from 'lucide-react';
+import { Quote, ExternalLink } from 'lucide-react';
 
 interface TestimonialCardProps {
   quote: string;
   author: string;
   rank?: string;
   unit?: string;
-  rating?: number;
+  credentials?: string;
+  sourceUrl?: string;
   className?: string;
 }
 
@@ -15,7 +16,8 @@ export default function TestimonialCard({
   author,
   rank,
   unit,
-  rating = 5,
+  credentials,
+  sourceUrl,
   className = ''
 }: TestimonialCardProps) {
   return (
@@ -46,28 +48,26 @@ export default function TestimonialCard({
         "{quote}"
       </blockquote>
       
-      {/* Rating */}
-      <div className="flex items-center gap-1 mb-3">
-        {[...Array(5)].map((_, i) => (
-          <Star
-            key={i}
-            size={16}
-            className={`${
-              i < rating ? 'text-night-vision fill-current' : 'text-steel-gray'
-            }`}
-          />
-        ))}
-      </div>
-      
       {/* Author info */}
       <div className="border-t border-steel-gray/30 pt-4">
         <div className="font-military-header text-night-vision text-sm tracking-wide">
           {rank && `${rank} `}{author}
         </div>
-        {unit && (
+        {(unit || credentials) && (
           <div className="text-tactical-tan text-xs font-mono-terminal mt-1">
-            {unit}
+            {credentials || unit}
           </div>
+        )}
+        {sourceUrl && (
+          <a 
+            href={sourceUrl} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1 text-night-vision hover:text-white transition-colors text-xs mt-2"
+          >
+            <span>Verify Quote</span>
+            <ExternalLink size={12} />
+          </a>
         )}
       </div>
       
