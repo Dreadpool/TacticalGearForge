@@ -7,7 +7,7 @@ import { lazy, Suspense, useState, useEffect } from "react";
 import LoadingProgress from "@/components/loading-progress";
 import RouteTransition from "@/components/route-transition";
 import SEOHead from "@/components/seo-head";
-import { useSmoothScroll } from "@/hooks/use-smooth-scroll";
+// Removed problematic smooth scroll hook
 
 // Lazy load components for code splitting
 const Home = lazy(() => import("@/pages/home"));
@@ -61,8 +61,7 @@ function Router() {
 function App() {
   const [isAppLoading, setIsAppLoading] = useState(true);
 
-  // Initialize smooth scrolling
-  useSmoothScroll();
+  // Removed problematic smooth scroll initialization
 
   useEffect(() => {
     // Register service worker for PWA
