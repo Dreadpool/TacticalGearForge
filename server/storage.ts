@@ -90,7 +90,13 @@ export class MemStorage implements IStorage {
         description: "Created by Travis Haley, veteran Force Recon Marine with 15 years of dedicated real-world experience. The D3CRM has earned operational experience with deployments to every branch of the U.S. military including broad usage with U.S./NATO special operations forces, federal, and local law enforcement agencies.",
         price: "189.00",
         category: "LOAD_BEARING",
-        imageUrl: "https://images.unsplash.com/photo-1622260614927-208cfe3f5cfd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600",
+        imageUrl: "/api/assets/D3CRM-main.png",
+        additionalImages: JSON.stringify([
+          "/api/assets/D3CRM-main.png",
+          "/api/assets/D3CRM-view-2.png",
+          "/api/assets/D3CRM-view-3.png",
+          "/api/assets/D3CRM-view-4.png"
+        ]),
         inStock: true,
         specifications: JSON.stringify({
           creator: "Travis Haley - Force Recon Marine (15 years)",
@@ -111,7 +117,13 @@ export class MemStorage implements IStorage {
         description: "Pat McNamara, former Delta Force: 'For optics, he prefers Aimpoint in the T-2 series, though the Aimpoint Comp M5 is also getting great reviews.' Used by U.S. Armed Forces elite assault teams and Special Forces all over the world, regarded as the standard optical sight in most NATO countries.",
         price: "849.00", 
         category: "OPTICS",
-        imageUrl: "https://images.unsplash.com/photo-1584109410918-d019eed22b90?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600",
+        imageUrl: "/api/assets/T2-main.jpg",
+        additionalImages: JSON.stringify([
+          "/api/assets/T2-main.jpg",
+          "/api/assets/T2-view-2.jpg",
+          "/api/assets/T2-view-3.jpg",
+          "/api/assets/T2-view-4.jpg"
+        ]),
         inStock: true,
         specifications: JSON.stringify({
           endorser: "Pat McNamara - Former Delta Force",
@@ -133,7 +145,13 @@ export class MemStorage implements IStorage {
         description: "Pat McNamara, former Delta Force: 'prefers mounting tactical lights at the 3 o'clock position using a Surefire scout light.' Mike Glover, Green Beret: 'For illumination, Glover uses the Surefire...because it's slim and easy to carry, rechargeable, and has multiple output intensity settings.'",
         price: "359.00",
         category: "TOOLS",
-        imageUrl: "https://images.unsplash.com/photo-1584633855574-feae321722e4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600",
+        imageUrl: "/api/assets/M600DF-main.jpg",
+        additionalImages: JSON.stringify([
+          "/api/assets/M600DF-main.jpg",
+          "/api/assets/M600DF-view-2.jpg",
+          "/api/assets/M600DF-view-3.jpg",
+          "/api/assets/M600DF-view-4.jpg"
+        ]),
         inStock: true,
         specifications: JSON.stringify({
           endorsers: "Pat McNamara (Delta Force), Mike Glover (Green Beret)",
